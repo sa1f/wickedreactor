@@ -2,18 +2,21 @@
 'use strict'
 
 import { Component } from 'react';
+import FilterScreen from './src/components/FilterScreen';
 import React from 'react';
-import RealEstateMap from './src/components/RealEstateMap';
+import MapScreen from './src/components/MapScreen';
+import { StackNavigator } from 'react-navigation';
+
+const Navigator = StackNavigator({
+  Map: { screen: MapScreen },
+  Filter: { screen: FilterScreen },
+},
+{
+  headerMode: 'none',
+});
 
 export default class Remaximum extends React.Component<{}> {
-  _vancouverRegion = {
-    latitude: 49.2827,
-    longitude: -123.1207,
-    latitudeDelta: 0.1,
-    longitudeDelta: 0.1,
-  };
-
   render() {
-    return <RealEstateMap region={this._vancouverRegion} />;
+    return <Navigator />;
   }
 }
