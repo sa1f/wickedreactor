@@ -16,6 +16,7 @@
 
 <PROJECT_ROOT>/node_modules/react-native/.*
 <PROJECT_ROOT>/node_modules/metro-bundler/.*
+<PROJECT_ROOT>/node_modules/react-native-side-menu/.*
 <PROJECT_ROOT>/libdefs.js
 .*/__tests__/.*
 

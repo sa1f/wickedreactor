@@ -1,27 +1,19 @@
 // @flow
 'use strict'
 
-import React, { Component } from 'react';
-import MapView from 'react-native-maps';
+import { Component } from 'react';
+import React from 'react';
+import RealEstateMap from './src/components/RealEstateMap';
 
-export default class Remaximum extends Component<{}> {
+export default class Remaximum extends React.Component<{}> {
+  _vancouverRegion = {
+    latitude: 49.2827,
+    longitude: -123.1207,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.1,
+  };
+
   render() {
-    return (
-      <MapView
-        region={{
-          latitude: 49.2827,
-          longitude: -123.1207,
-          latitudeDelta: 0.1,
-          longitudeDelta: 0.1,
-        }}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-        }}
-      />
-    );
+    return <RealEstateMap region={this._vancouverRegion} />;
   }
 }
