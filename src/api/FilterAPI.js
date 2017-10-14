@@ -2,12 +2,11 @@
 'use strict'
 
 import Filter from '../models/Filter';
-import House from '../models/House';
 import { List } from 'immutable';
 
-export default class HouseAPI {
-    static genHouses(): List<House> {
-      return this._createHouses(fetch(new Request(
+export default class FilterAPI {
+    static genFilteredData(): List<Object> {
+      return fetch(new Request(
         'http://localhost/api',
         {
           method: 'GET',
@@ -15,16 +14,10 @@ export default class HouseAPI {
         }))
         .then((response) => response.json())
         .then((responseJson) => {
-          return responseJson.houses;
+          return responseJson;
         })
         .catch((error) => {
           console.error(error);
-        }));
-    }
-
-    static _createHouses(objects: Array<Object>): List<House> {
-      return List(objects.map(object =>
-        new House(object),
-      ));
+        });
     }
 }
