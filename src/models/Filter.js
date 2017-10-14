@@ -1,8 +1,10 @@
 // @flow
 'use strict'
 
+import { List } from 'immutable';
+
 export default class Filter {
-  _filter: Filter;
+  static _filter: Filter;
 
   _minimumLatitude: number;
   _maximumLatitude: number;
@@ -16,7 +18,7 @@ export default class Filter {
   _chargingStationRange: number;
   _busStopRange: number;
 
-  getFilter(): Filter {
+  static getFilter(): Filter {
     if (!this._filter) {
       this._filter = new Filter();
     }
@@ -77,5 +79,21 @@ export default class Filter {
   setBusStopRange(busStopRange: number): this {
     this._busStopRange = busStopRange;
     return this;
+  }
+
+  toJSONString(): string {
+    return JSON.stringify({
+      minimumLatitude: this._minimumLatitude,
+      maximumLatitude: this._maximumLatitude,
+      minimumLongitude: this._minimumLongitude,
+      maximumLongitude: this._maximumLongitude,
+      schoolRange: this._schoolRange,
+      libraryRange: this._libraryRange,
+      culturalSpaceRange: this._culturalSpaceRange,
+      parkRange: this._parkRange,
+      recreationalCenterRange: this._recreationalCenterRange,
+      chargingStationRange: this._chargingStationRange,
+      busStopRange: this._busStopRange,
+    });
   }
 }
