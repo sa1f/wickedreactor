@@ -3,6 +3,19 @@
 
 import { List } from 'immutable';
 
+type HouseData = {
+  latitude: number,
+  longitude: number,
+  price: number,
+  schools?: List<string>,
+  libraries?: List<string>,
+  culturalSpaces?: List<string>,
+  parks?: List<string>,
+  recreationalCenters?: List<string>,
+  chargingStations?: List<string>,
+  busStops?: List<string>,
+};
+
 export default class House {
   _latitude: number;
   _longitude: number;
@@ -16,18 +29,7 @@ export default class House {
   _chargingStations: List<string>;
   _busStops: List<string>;
 
-  constructor(house: {
-    latitude: number,
-    longitude: number,
-    price: number,
-    schools?: List<string>,
-    libraries?: List<string>,
-    culturalSpaces?: List<string>,
-    parks?: List<string>,
-    recreationalCenters?: List<string>,
-    chargingStations?: List<string>,
-    busStops?: List<string>,
-  }) {
+  constructor(house: HouseData) {
     this._latitude = house.latitude;
     this._longitude = house.longitude;
     this._price = house.price;
@@ -38,6 +40,12 @@ export default class House {
     this._recreationalCenters = house.recreationalCenters || List();
     this._chargingStations = house.chargingStations || List();
     this._busStops = house.busStops || List();
+  }
+
+  static createHouses(objects: Array<Object>): List<House> {
+    return List(objects.map(object =>
+      new House((object: HouseData)),
+    ));
   }
 
   getLatitude(): number {

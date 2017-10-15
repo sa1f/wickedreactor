@@ -3,6 +3,8 @@
 import { AppRegistry } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Component } from 'react';
+import FilterAPI from '../api/FilterAPI';
+import { List } from 'immutable';
 import { Text } from 'react-native';
 import { Icon } from 'react-native-elements';
 import React from 'react';
@@ -67,9 +69,13 @@ export default class FilterScreen extends React.Component<Props, State> {
      placeholderMessage:'',
      promptVisible: false,
      curFilter: '',
-     curFilterObj: new Filter()
+     curFilterObj: Filter.getFilter()
    };
  }
+
+  _genFilterData(): List<Object> {
+    return FilterAPI.genFilteredData();
+  }
 
   render() {
     const { navigate } = this.props.navigation;
