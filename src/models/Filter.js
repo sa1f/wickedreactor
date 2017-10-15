@@ -4,6 +4,8 @@
 export default class Filter {
   _filter: Filter;
 
+  _minimumPrice: number;
+  _maximumPrice: number;
   _minimumLatitude: number;
   _maximumLatitude: number;
   _minimumLongitude: number;
@@ -15,13 +17,22 @@ export default class Filter {
   _recreationalCenterRange: number;
   _chargingStationRange: number;
   _busStopRange: number;
-
   getFilter(): Filter {
     if (!this._filter) {
       this._filter = new Filter();
     }
 
     return this._filter;
+  }
+
+  setMinimumPrice(price: number): this {
+    this._minimumPrice = price;
+    return this;
+  }
+
+  setMaximumPrice(price: number): this {
+    this._maximumPrice = price;
+    return this;
   }
 
   setMinimumLatitude(latitude: number): this {
