@@ -1,6 +1,5 @@
 // @flow
 'use strict'
-import { AppRegistry } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Component } from 'react';
 import FilterAPI from '../api/FilterAPI';
@@ -94,31 +93,19 @@ export default class FilterScreen extends React.Component<Props, State> {
     const { navigate } = this.props.navigation;
 
     return (
-      <View style={{backgroundColor:'#f6f6f6', flex:1}}>
-        <View style={{
-          borderBottomWidth:1,
-          backgroundColor:'#263238',
-          borderColor:'#c8c7cc',
-          flexDirection: 'row',
-        }}>
-          <Icon style={{marginLeft:15, marginTop:15}}
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Icon style={styles.headericon}
             name='arrow-left'
             type='font-awesome'
             color="white"
             onPress={() => navigate('Map', {})}
           />
-          <Text style={{
-            color:'white',
-            marginTop:15,
-            marginBottom:15,
-            marginLeft:25,
-            fontWeight:'bold',
-            fontSize:20,
-          }}>
+          <Text style={styles.headertext}>
             Filters
           </Text>
         </View>
-        <View style={{backgroundColor:'#f6f6f6', flex:1}}>
+        <View style={styles.body}>
           <SettingsList>
              <SettingsList.Item
                icon={
@@ -130,7 +117,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                }
                hasNavArrow={false}
                itemWidth={70}
-               titleStyle={{color:'black', fontSize: 16}}
+               titleStyle={styles.filteritem}
                title='Minimum Price'
                titleInfo={String(Filter.getFilter().getMinimumPrice())}
                onPress={() => this.setState({
@@ -150,7 +137,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                }
                hasNavArrow={false}
                itemWidth={70}
-               titleStyle={{color:'black', fontSize: 16}}
+               titleStyle={styles.filteritem}
                title='Maximum Price'
                titleInfo={String(Filter.getFilter().getMaximumPrice())}
                onPress={() => this.setState({
@@ -170,7 +157,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                }
                hasNavArrow={false}
                itemWidth={70}
-               titleStyle={{color:'black', fontSize: 16}}
+               titleStyle={styles.filteritem}
                title='Range to Schools'
                titleInfo={String(Filter.getFilter().getSchoolRange())}
                onPress={() => this.setState({
@@ -190,7 +177,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                }
                hasNavArrow={false}
                itemWidth={70}
-               titleStyle={{color:'black', fontSize: 16}}
+               titleStyle={styles.filteritem}
                title='Range to Libraries'
                titleInfo={String(Filter.getFilter().getLibraryRange())}
                onPress={() => this.setState({
@@ -210,7 +197,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                }
                hasNavArrow={false}
                itemWidth={70}
-               titleStyle={{color:'black', fontSize: 16}}
+               titleStyle={styles.filteritem}
                title='Range to Cultural Spaces'
                titleInfo={ String(Filter.getFilter().getCulturalSpaceRange())}
                onPress={() => this.setState({
@@ -230,7 +217,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                }
                hasNavArrow={false}
                itemWidth={70}
-               titleStyle={{color:'black', fontSize: 16}}
+               titleStyle={styles.filteritem}
                title='Range to Parks'
                titleInfo={String(Filter.getFilter().getParkRange())}
                onPress={() => this.setState({
@@ -250,7 +237,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                }
                hasNavArrow={false}
                itemWidth={70}
-               titleStyle={{color:'black', fontSize: 16}}
+               titleStyle={styles.filteritem}
                title='Range to Rec Centers'
                titleInfo={
                  String(Filter.getFilter().getRecreationalCenterRange())
@@ -272,7 +259,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                }
                hasNavArrow={false}
                itemWidth={70}
-               titleStyle={{color:'black', fontSize: 16}}
+               titleStyle={styles.filteritem}
                title='Range to Charging Stations'
                titleInfo={String(Filter.getFilter().getChargingStationRange())}
                onPress={() => this.setState({
@@ -292,7 +279,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                }
                hasNavArrow={false}
                itemWidth={70}
-               titleStyle={{color:'black', fontSize: 16}}
+               titleStyle={styles.filteritem}
                title='Range to Bus Stops'
                titleInfo={String(Filter.getFilter().getBusStopRange())}
                onPress={() => this.setState({
@@ -315,3 +302,36 @@ export default class FilterScreen extends React.Component<Props, State> {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex:1,
+    backgroundColor:'#f6f6f6',
+  },
+  header: {
+    borderBottomWidth:1,
+    backgroundColor:'#263238',
+    borderColor:'#c8c7cc',
+    flexDirection: 'row',
+  },
+  headericon: {
+    marginLeft:15,
+    marginTop:15,
+  },
+  headertext: {
+    color:'white',
+    marginTop:15,
+    marginBottom:15,
+    marginLeft:25,
+    fontWeight:'bold',
+    fontSize:20,
+  },
+  body: {
+    flex:1,
+    backgroundColor:'#f6f6f6',
+  },
+  filteritem: {
+    color:'black',
+    fontSize: 16
+  }
+});
