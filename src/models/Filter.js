@@ -93,8 +93,8 @@ export default class Filter {
     return this;
   }
 
-  toJSONString(): string {
-    return JSON.stringify({
+  toJSON(): Object {
+    return {
       minimumLatitude: this._minimumLatitude,
       maximumLatitude: this._maximumLatitude,
       minimumLongitude: this._minimumLongitude,
@@ -106,6 +106,6 @@ export default class Filter {
       recreationalCenterRange: this._recreationalCenterRange,
       chargingStationRange: this._chargingStationRange,
       busStopRange: this._busStopRange,
-    });
+    };
   }
 }

@@ -12,12 +12,12 @@ import { Text } from 'react-native';
 import { View } from 'react-native';
 
 type Props = {
-  navigation: any;
-}
+  navigation: any,
+};
 
 type State = {
-  houses: List<House>;
-}
+  houses: List<House>,
+};
 
 export default class MapScreen extends React.Component<Props, State> {
   _vancouverRegion = {
@@ -59,7 +59,8 @@ export default class MapScreen extends React.Component<Props, State> {
           name='filter'
           type='font-awesome'
           reverse={true}
-          onPress={() => navigate('Filter', {})}/>
+          onPress={() => navigate('Filter', {})}
+        />
       </View>
     );
   }

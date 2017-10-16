@@ -10,7 +10,7 @@ export default class FilterAPI {
         'http://localhost/api',
         {
           method: 'GET',
-          body: Filter.getFilter().toJSONString()
+          body:  JSON.stringify(Filter.getFilter())
         }))
         .then((response) => response.json())
         .then((responseJson) => {
