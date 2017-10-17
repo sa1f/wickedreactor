@@ -28,6 +28,7 @@ type State = {
 };
 
 export default class MapScreen extends React.Component<Props, State> {
+  
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -56,6 +57,7 @@ export default class MapScreen extends React.Component<Props, State> {
     this.index = 0;
     this.animation = new Animated.Value(0);
   }
+  
   componentDidMount() {
     // We should detect when scrolling has stopped then animate
     // We should just debounce the event listener here
@@ -90,8 +92,8 @@ export default class MapScreen extends React.Component<Props, State> {
   }
 
   render() {
-    const { navigate } = this.props.navigation;
-    const interpolations = this.state.markers.map((marker, index) => {
+	const { navigate } = this.props.navigation;
+	const interpolations = this.state.markers.map((marker, index) => {
       const inputRange = [
         (index - 1) * CARD_WIDTH,
         index * CARD_WIDTH,
