@@ -119,7 +119,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                itemWidth={70}
                titleStyle={styles.filteritem}
                title='Minimum Price'
-               titleInfo={String(Filter.getFilter().getMinimumPrice())}
+               titleInfo={"$" + String(Filter.getFilter().getMinimumPrice())}
                onPress={() => this.setState({
                  promptVisible: true,
                  message:"Set the Minimum Price",
@@ -139,7 +139,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                itemWidth={70}
                titleStyle={styles.filteritem}
                title='Maximum Price'
-               titleInfo={String(Filter.getFilter().getMaximumPrice())}
+               titleInfo={"$" + String(Filter.getFilter().getMaximumPrice())}
                onPress={() => this.setState({
                  promptVisible: true,
                  message:"Set the Maximum Price",
@@ -159,7 +159,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                itemWidth={70}
                titleStyle={styles.filteritem}
                title='Range to Schools'
-               titleInfo={String(Filter.getFilter().getSchoolRange())}
+               titleInfo={String(Filter.getFilter().getSchoolRange()) + " km"}
                onPress={() => this.setState({
                  promptVisible: true,
                  message:"Set the Maximum Range to Schools",
@@ -179,7 +179,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                itemWidth={70}
                titleStyle={styles.filteritem}
                title='Range to Libraries'
-               titleInfo={String(Filter.getFilter().getLibraryRange())}
+               titleInfo={String(Filter.getFilter().getLibraryRange()) + " km"}
                onPress={() => this.setState({
                  promptVisible: true,
                  message:"Set the Maximum Range to Libraries",
@@ -199,7 +199,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                itemWidth={70}
                titleStyle={styles.filteritem}
                title='Range to Cultural Spaces'
-               titleInfo={ String(Filter.getFilter().getCulturalSpaceRange())}
+               titleInfo={ String(Filter.getFilter().getCulturalSpaceRange()) + " km"}
                onPress={() => this.setState({
                  promptVisible: true,
                  message:"Set the Maximum Range to Cultural Spaces",
@@ -219,7 +219,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                itemWidth={70}
                titleStyle={styles.filteritem}
                title='Range to Parks'
-               titleInfo={String(Filter.getFilter().getParkRange())}
+               titleInfo={String(Filter.getFilter().getParkRange()) + " km"}
                onPress={() => this.setState({
                  promptVisible: true,
                  message:"Set the Maximum Range to Parks",
@@ -240,7 +240,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                titleStyle={styles.filteritem}
                title='Range to Rec Centers'
                titleInfo={
-                 String(Filter.getFilter().getRecreationalCenterRange())
+                 String(Filter.getFilter().getRecreationalCenterRange() + " km")
                }
                onPress={() => this.setState({
                  promptVisible: true,
@@ -261,7 +261,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                itemWidth={70}
                titleStyle={styles.filteritem}
                title='Range to Charging Stations'
-               titleInfo={String(Filter.getFilter().getChargingStationRange())}
+               titleInfo={String(Filter.getFilter().getChargingStationRange()) + " km"}
                onPress={() => this.setState({
                  promptVisible: true,
                  message:"Set the Maximum Range to Charging Stations",
@@ -281,7 +281,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                itemWidth={70}
                titleStyle={styles.filteritem}
                title='Range to Bus Stops'
-               titleInfo={String(Filter.getFilter().getBusStopRange())}
+               titleInfo={String(Filter.getFilter().getBusStopRange()) + " km"}
                onPress={() => this.setState({
                  promptVisible: true,
                  message:"Set the Maximum Range to Bus Stops",
@@ -313,6 +313,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#263238',
     borderColor:'#c8c7cc',
     flexDirection: 'row',
+    marginBottom: -5,
   },
   headericon: {
     marginLeft:15,
