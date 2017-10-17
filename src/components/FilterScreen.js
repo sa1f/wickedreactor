@@ -199,7 +199,9 @@ export default class FilterScreen extends React.Component<Props, State> {
                itemWidth={70}
                titleStyle={styles.filteritem}
                title='Range to Cultural Spaces'
-               titleInfo={ String(Filter.getFilter().getCulturalSpaceRange()) + " km"}
+               titleInfo={
+                 String(Filter.getFilter().getCulturalSpaceRange()) + " km"
+               }
                onPress={() => this.setState({
                  promptVisible: true,
                  message:"Set the Maximum Range to Cultural Spaces",
@@ -240,7 +242,7 @@ export default class FilterScreen extends React.Component<Props, State> {
                titleStyle={styles.filteritem}
                title='Range to Rec Centers'
                titleInfo={
-                 String(Filter.getFilter().getRecreationalCenterRange() + " km")
+                 String(Filter.getFilter().getRecreationalCenterRange()) + " km"
                }
                onPress={() => this.setState({
                  promptVisible: true,

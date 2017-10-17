@@ -17,22 +17,35 @@ const { width, height } = Dimensions.get("window");
 
 const CARD_HEIGHT = height / 4;
 const CARD_WIDTH = CARD_HEIGHT;
+const REGION_TIMEOUT_DELAY_MILLISECONDS = 10;
+
+type Region = {
+  latitude: number,
+  longitude: number,
+  latitudeDelta: number,
+  longitudeDelta: number,
+};
 
 type Props = {
   navigation: any,
 };
 
 type State = {
-  markers: List<House>,
-  region: Object,
+  houses: List<House>,
+  region: Region,
 };
 
 export default class MapScreen extends React.Component<Props, State> {
-  
+  _index: number = 0;
+  _regionTimeoutID: number = 0;
+
+  _animation: Object = {};
+  _map: ?MapView;
+
   constructor(props: Props) {
     super(props);
     this.state = {
-      markers: House.createHouses([
+      houses: House.createHouses([
         {
           latitude: 49.2694,
           longitude: -123.2589,
@@ -54,90 +67,112 @@ export default class MapScreen extends React.Component<Props, State> {
   }
 
   componentWillMount() {
-    this.index = 0;
-    this.animation = new Animated.Value(0);
+    this._index = 0;
+    this._animation = new Animated.Value(0);
   }
-  
+
   componentDidMount() {
     // We should detect when scrolling has stopped then animate
     // We should just debounce the event listener here
-    this.animation.addListener(({ value }) => {
-      let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-      if (index >= this.state.markers.size) {
-        index = this.state.markers.size - 1;
+    this._animation.addListener(({ value }) => {
+      // animate 30% away from landing on the next item
+      let index = Math.floor(value / CARD_WIDTH + 0.3);
+
+      if (index >= this.state.houses.size) {
+        index = this.state.houses.size - 1;
       }
+
       if (index <= 0) {
         index = 0;
       }
 
-      clearTimeout(this.regionTimeout);
-      this.regionTimeout = setTimeout(() => {
-        if (this.index !== index) {
-          this.index = index;
-          const coordinate = {
-            latitude: this.state.markers.get(index).getLatitude(),
-            longitude: this.state.markers.get(index).getLongitude(),
-          };
-          this.map.animateToRegion(
+      clearTimeout(this._regionTimeoutID);
+
+      this._regionTimeoutID = setTimeout(
+        this._getTimeoutCallback(index),
+        REGION_TIMEOUT_DELAY_MILLISECONDS,
+      );
+    });
+  }
+
+  _getTimeoutCallback(index: number): () => void {
+    return () => {
+      if (this._index !== index) {
+        this._index = index;
+
+        const coordinate = {
+          latitude: this.state.houses.get(index).getLatitude(),
+          longitude: this.state.houses.get(index).getLongitude(),
+        };
+
+        if (this._map) {
+          this._map.animateToRegion(
             {
               ...coordinate,
               latitudeDelta: this.state.region.latitudeDelta,
               longitudeDelta: this.state.region.longitudeDelta,
             },
-            350
+            350,
           );
         }
-      }, 10);
-    });
+      }
+    };
   }
 
-  render() {
-	const { navigate } = this.props.navigation;
-	const interpolations = this.state.markers.map((marker, index) => {
+  _getInterpolations(): List<Object> {
+    return this.state.houses.map((house, index) => {
       const inputRange = [
         (index - 1) * CARD_WIDTH,
         index * CARD_WIDTH,
         ((index + 1) * CARD_WIDTH),
       ];
-      const scale = this.animation.interpolate({
+      const scale = this._animation.interpolate({
         inputRange,
         outputRange: [1, 2.5, 1],
         extrapolate: "clamp",
       });
-      const opacity = this.animation.interpolate({
+      const opacity = this._animation.interpolate({
         inputRange,
         outputRange: [0.35, 1, 0.35],
         extrapolate: "clamp",
       });
+
       return { scale, opacity };
     });
+  }
+
+  render() {
+    const { navigate } = this.props.navigation;
+    const interpolations = this._getInterpolations();
 
     return (
       <View style={styles.container}>
         <MapView
-          ref={map => this.map = map}
+          ref={map => this._map = map}
           initialRegion={this.state.region}
-          style={styles.map}
-        >
-          {this.state.markers.map((marker, index) => {
-            if(interpolations[index] != null) {
-            const scaleStyle = {
-              transform: [
-                {
-                  scale: interpolations[index].scale,
-                },
-              ],
-            };
+          style={styles.map}>
+          {this.state.houses.map((house, index) => {
+            if (interpolations.get(index)) {
+              const scaleStyle = {
+                transform: [
+                  {
+                    scale: interpolations.get(index).scale,
+                  },
+                ],
+              };
 
-            const opacityStyle = {
-              opacity: interpolations[index].opacity,
-            };
-          }
+              const opacityStyle = {
+                opacity: interpolations.get(index).opacity,
+              };
+            }
+
             return (
-              <MapView.Marker key={index} coordinate={{
-                latitude: marker.getLatitude(),
-                longitude: marker.getLongitude(),
-              }}>
+              <MapView.Marker
+                key={index}
+                coordinate={{
+                  latitude: house.getLatitude(),
+                  longitude: house.getLongitude(),
+                }}>
                 <Icon
                   name='home'
                   type='font-awesome'
@@ -163,23 +198,40 @@ export default class MapScreen extends React.Component<Props, State> {
               {
                 nativeEvent: {
                   contentOffset: {
-                    x: this.animation,
+                    x: this._animation,
                   },
                 },
               },
             ],
-            { useNativeDriver: true }
+            { useNativeDriver: true },
           )}
           style={styles.scrollView}
-          contentContainerStyle={styles.endPadding}
-        >
-          {this.state.markers.map((marker, index) => (
-            <View style={styles.card} key={index}>
+          contentContainerStyle={styles.endPadding}>
+          {this.state.houses.map((house, index) => (
+            <View
+              style={styles.card}
+              key={index}>
               <View style={styles.textContent}>
-                <Text numberOfLines={1} style={styles.cardtitle}>{"House " + index}</Text>
-                <Text numberOfLines={1} style={styles.cardDescription}>{"Price: " + marker.getPrice()}</Text>
-                <Text numberOfLines={1} style={styles.cardDescription}>{"Latitude: " + marker.getLatitude()}</Text>
-                <Text numberOfLines={1} style={styles.cardDescription}>{"Longitude: " + marker.getLongitude()}</Text>
+                <Text
+                  numberOfLines={1}
+                  style={styles.cardtitle}>
+                  {"House " + index}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={styles.cardDescription}>
+                  {"Price: " + house.getPrice()}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={styles.cardDescription}>
+                  {"Latitude: " + house.getLatitude()}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={styles.cardDescription}>
+                  {"Longitude: " + house.getLongitude()}
+                </Text>
               </View>
             </View>
           ))}
