@@ -1,17 +1,19 @@
 // @flow
 'use strict'
+
+import { Animated } from 'react-native';
 import { Component } from 'react';
+import { Dimensions } from 'react-native';
+import Filter from '../models/Filter';
 import House from '../models/House';
 import { Icon } from 'react-native-elements';
 import { List } from 'immutable';
 import MapView from 'react-native-maps';
 import React from 'react';
+import { ScrollView } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { Text } from 'react-native';
 import { View } from 'react-native';
-import { ScrollView } from 'react-native';
-import { Animated } from 'react-native';
-import { Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get("window");
 
@@ -28,42 +30,25 @@ type Region = {
 
 type Props = {
   navigation: any,
-};
-
-type State = {
   houses: List<House>,
-  region: Region,
 };
 
-export default class MapScreen extends React.Component<Props, State> {
+export default class MapScreen extends React.Component<Props> {
   _index: number = 0;
   _regionTimeoutID: number = 0;
 
   _animation: Object = {};
   _map: ?MapView;
 
+  _vancouverRegion: Region = {
+    latitude: 49.2827,
+    longitude: -123.1207,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.1,
+  };
+
   constructor(props: Props) {
     super(props);
-    this.state = {
-      houses: House.createHouses([
-        {
-          latitude: 49.2694,
-          longitude: -123.2589,
-          price: 586956,
-        },
-        {
-          latitude: 49.2606,
-          longitude: -123.2450,
-          price: 659369
-        },
-      ]),
-      region: {
-        latitude: 49.2827,
-        longitude: -123.1207,
-        latitudeDelta: 0.1,
-        longitudeDelta: 0.1,
-      },
-    };
   }
 
   componentWillMount() {
@@ -78,8 +63,8 @@ export default class MapScreen extends React.Component<Props, State> {
       // animate 30% away from landing on the next item
       let index = Math.floor(value / CARD_WIDTH + 0.3);
 
-      if (index >= this.state.houses.size) {
-        index = this.state.houses.size - 1;
+      if (index >= this.props.houses.size) {
+        index = this.props.houses.size - 1;
       }
 
       if (index <= 0) {
@@ -101,16 +86,16 @@ export default class MapScreen extends React.Component<Props, State> {
         this._index = index;
 
         const coordinate = {
-          latitude: this.state.houses.get(index).getLatitude(),
-          longitude: this.state.houses.get(index).getLongitude(),
+          latitude: this.props.houses.get(index).getLatitude(),
+          longitude: this.props.houses.get(index).getLongitude(),
         };
 
         if (this._map) {
           this._map.animateToRegion(
             {
               ...coordinate,
-              latitudeDelta: this.state.region.latitudeDelta,
-              longitudeDelta: this.state.region.longitudeDelta,
+              latitudeDelta: this._vancouverRegion.latitudeDelta,
+              longitudeDelta: this._vancouverRegion.longitudeDelta,
             },
             350,
           );
@@ -120,7 +105,7 @@ export default class MapScreen extends React.Component<Props, State> {
   }
 
   _getInterpolations(): List<Object> {
-    return this.state.houses.map((house, index) => {
+    return this.props.houses.map((house, index) => {
       const inputRange = [
         (index - 1) * CARD_WIDTH,
         index * CARD_WIDTH,
@@ -149,9 +134,9 @@ export default class MapScreen extends React.Component<Props, State> {
       <View style={styles.container}>
         <MapView
           ref={map => this._map = map}
-          initialRegion={this.state.region}
+          initialRegion={this._vancouverRegion}
           style={styles.map}>
-          {this.state.houses.map((house, index) => {
+          {this.props.houses.map((house, index) => {
             if (interpolations.get(index)) {
               const scaleStyle = {
                 transform: [
@@ -176,7 +161,7 @@ export default class MapScreen extends React.Component<Props, State> {
                 <Icon
                   name='home'
                   type='font-awesome'
-                  color='red'
+                  color='black'
                 />
               </MapView.Marker>
             );
@@ -207,7 +192,7 @@ export default class MapScreen extends React.Component<Props, State> {
           )}
           style={styles.scrollView}
           contentContainerStyle={styles.endPadding}>
-          {this.state.houses.map((house, index) => (
+          {this.props.houses.map((house, index) => (
             <View
               style={styles.card}
               key={index}>

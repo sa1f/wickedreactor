@@ -1,20 +1,20 @@
 // @flow
 'use strict'
-import { StyleSheet } from 'react-native';
+
 import { Component } from 'react';
-import FilterAPI from '../api/FilterAPI';
-import { List } from 'immutable';
-import { Text } from 'react-native';
+import Filter from '../models/Filter';
 import { Icon } from 'react-native-elements';
-import React from 'react';
-import { View } from 'react-native';
- // fixed by replacing the index.js in module with code in
- // https://github.com/evetstech/react-native-settings-list/pull/40
-import SettingsList from 'react-native-settings-list';
+import { List } from 'immutable';
 // fixed by making modifications to prompt.js outlined here:
 // https://github.com/jaysoo/react-native-prompt/pull/24
 import Prompt from 'react-native-prompt';
-import Filter from '../models/Filter';
+import React from 'react';
+ // fixed by replacing the index.js in module with code in
+ // https://github.com/evetstech/react-native-settings-list/pull/40
+import SettingsList from 'react-native-settings-list';
+import { StyleSheet } from 'react-native';
+import { Text } from 'react-native';
+import { View } from 'react-native';
 
 const FilterField = {
   minimumPrice: 'minimumPrice',
@@ -85,10 +85,6 @@ export default class FilterScreen extends React.Component<Props, State> {
     }
   }
 
-  _genFilterData(): List<Object> {
-    return FilterAPI.genFilteredData();
-  }
-
   render() {
     const { navigate } = this.props.navigation;
 
@@ -99,7 +95,10 @@ export default class FilterScreen extends React.Component<Props, State> {
             name='arrow-left'
             type='font-awesome'
             color="white"
-            onPress={() => navigate('Map', {})}
+            onPress={() => navigate(
+              'Map',
+              { houses: Filter.genHouses()},
+            )}
           />
           <Text style={styles.headertext}>
             Filters

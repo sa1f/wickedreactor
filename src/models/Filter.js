@@ -1,6 +1,8 @@
 // @flow
 'use strict'
 
+import House from './House';
+import FilterMockAPI from '../api/FilterMockAPI';
 import { List } from 'immutable';
 
 export default class Filter {
@@ -26,6 +28,10 @@ export default class Filter {
     }
 
     return this._filter;
+  }
+
+  static genHouses(): List<House> {
+    return FilterMockAPI.genHouses();
   }
 
   getMinimumPrice(): number {

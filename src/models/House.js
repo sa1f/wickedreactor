@@ -3,7 +3,7 @@
 
 import { List } from 'immutable';
 
-type HouseData = {
+export type HouseData = {
   latitude: number,
   longitude: number,
   price: number,
@@ -42,7 +42,7 @@ export default class House {
     this._busStops = house.busStops || List();
   }
 
-  static createHouses(objects: Array<Object>): List<House> {
+  static createHouses(objects: List<Object> | Array<Object>): List<House> {
     return List(objects.map(object =>
       new House((object: HouseData)),
     ));

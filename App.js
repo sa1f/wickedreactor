@@ -2,14 +2,16 @@
 'use strict'
 
 import { Component } from 'react';
+import Filter from './src/models/Filter';
 import FilterScreen from './src/components/FilterScreen';
-import React from 'react';
 import MapScreen from './src/components/MapScreen';
+import React from 'react';
 import { StackNavigator } from 'react-navigation';
+import { withMappedNavigationProps } from 'react-navigation-props-mapper';
 
 const Navigator = StackNavigator({
-  Map: { screen: MapScreen },
-  Filter: { screen: FilterScreen },
+  Map: { screen: withMappedNavigationProps(MapScreen) },
+  Filter: { screen: withMappedNavigationProps(FilterScreen) },
 },
 {
   headerMode: 'none',
@@ -17,6 +19,6 @@ const Navigator = StackNavigator({
 
 export default class Remaximum extends React.Component<{}> {
   render() {
-    return <Navigator />;
+    return <Navigator screenProps={{houses: Filter.genHouses()}}/>;
   }
 }
