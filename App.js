@@ -19,6 +19,6 @@ const Navigator = StackNavigator({
 
 export default class Remaximum extends React.Component<{}> {
   render() {
-    return <Navigator screenProps={{houses: Filter.genHouses()}}/>;
+    return <Navigator screenProps={{houses: Filter.getFilter().genHouses()}}/>;
   }
 }

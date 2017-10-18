@@ -97,7 +97,7 @@ export default class FilterScreen extends React.Component<Props, State> {
             color="white"
             onPress={() => navigate(
               'Map',
-              { houses: Filter.genHouses()},
+              { houses: Filter.getFilter().genHouses()},
             )}
           />
           <Text style={styles.headertext}>

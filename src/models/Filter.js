@@ -1,9 +1,11 @@
 // @flow
 'use strict'
 
-import House from './House';
 import FilterMockAPI from '../api/FilterMockAPI';
+import House from './House';
 import { List } from 'immutable';
+
+import type { Region } from '../components/MapScreen';
 
 export default class Filter {
   static _filter: Filter;
@@ -12,8 +14,8 @@ export default class Filter {
   _maximumPrice: number = 100000000;
   _minimumLatitude: number = 49;
   _maximumLatitude: number = 50;
-  _minimumLongitude: number = -123;
-  _maximumLongitude: number = -124;
+  _minimumLongitude: number = -124;
+  _maximumLongitude: number = -123;
   _schoolRange: number = 0;
   _libraryRange: number = 0;
   _culturalSpaceRange: number = 0;
@@ -23,15 +25,22 @@ export default class Filter {
   _busStopRange: number = 0;
 
   static getFilter(): Filter {
-	if (!this._filter) {
+    if (!this._filter) {
       this._filter = new Filter();
     }
 
     return this._filter;
   }
 
-  static genHouses(): List<House> {
+  genHouses(): List<House> {
     return FilterMockAPI.genHouses();
+  }
+
+  setRegion(region: Region): this {
+    return this.setMinimumLatitude(region.latitude - region.latitudeDelta)
+      .setMaximumLatitude(region.latitude + region.latitudeDelta)
+      .setMinimumLongitude(region.longitude - region.longitudeDelta)
+      .setMaximumLongitude(region.longitude + region.longitudeDelta);
   }
 
   getMinimumPrice(): number {

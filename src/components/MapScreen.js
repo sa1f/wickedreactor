@@ -21,7 +21,7 @@ const CARD_HEIGHT = height / 4;
 const CARD_WIDTH = CARD_HEIGHT;
 const REGION_TIMEOUT_DELAY_MILLISECONDS = 10;
 
-type Region = {
+export type Region = {
   latitude: number,
   longitude: number,
   latitudeDelta: number,
@@ -33,7 +33,11 @@ type Props = {
   houses: List<House>,
 };
 
-export default class MapScreen extends React.Component<Props> {
+type State = {
+  houses: List<House>,
+}
+
+export default class MapScreen extends React.Component<Props, State> {
   _index: number = 0;
   _regionTimeoutID: number = 0;
 
@@ -49,6 +53,9 @@ export default class MapScreen extends React.Component<Props> {
 
   constructor(props: Props) {
     super(props);
+    this.state = {
+      houses: this.props.houses,
+    };
   }
 
   componentWillMount() {
@@ -63,8 +70,8 @@ export default class MapScreen extends React.Component<Props> {
       // animate 30% away from landing on the next item
       let index = Math.floor(value / CARD_WIDTH + 0.3);
 
-      if (index >= this.props.houses.size) {
-        index = this.props.houses.size - 1;
+      if (index >= this.state.houses.size) {
+        index = this.state.houses.size - 1;
       }
 
       if (index <= 0) {
@@ -86,8 +93,8 @@ export default class MapScreen extends React.Component<Props> {
         this._index = index;
 
         const coordinate = {
-          latitude: this.props.houses.get(index).getLatitude(),
-          longitude: this.props.houses.get(index).getLongitude(),
+          latitude: this.state.houses.get(index).getLatitude(),
+          longitude: this.state.houses.get(index).getLongitude(),
         };
 
         if (this._map) {
@@ -105,7 +112,7 @@ export default class MapScreen extends React.Component<Props> {
   }
 
   _getInterpolations(): List<Object> {
-    return this.props.houses.map((house, index) => {
+    return this.state.houses.map((house, index) => {
       const inputRange = [
         (index - 1) * CARD_WIDTH,
         index * CARD_WIDTH,
@@ -126,6 +133,10 @@ export default class MapScreen extends React.Component<Props> {
     });
   }
 
+  _updateHouses(houses: List<House>) {
+    this.setState({houses});
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     const interpolations = this._getInterpolations();
@@ -135,8 +146,11 @@ export default class MapScreen extends React.Component<Props> {
         <MapView
           ref={map => this._map = map}
           initialRegion={this._vancouverRegion}
-          style={styles.map}>
-          {this.props.houses.map((house, index) => {
+          style={styles.map}
+          onRegionChangeComplete={region => this._updateHouses(
+            Filter.getFilter().setRegion(region).genHouses(),
+          )}>
+          {this.state.houses.map((house, index) => {
             if (interpolations.get(index)) {
               const scaleStyle = {
                 transform: [
@@ -192,7 +206,7 @@ export default class MapScreen extends React.Component<Props> {
           )}
           style={styles.scrollView}
           contentContainerStyle={styles.endPadding}>
-          {this.props.houses.map((house, index) => (
+          {this.state.houses.map((house, index) => (
             <View
               style={styles.card}
               key={index}>
