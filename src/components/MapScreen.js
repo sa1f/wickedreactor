@@ -187,54 +187,12 @@ export default class MapScreen extends React.Component<Props, State> {
           reverse={true}
           onPress={() => navigate('Filter', {})}
         />
-        <Animated.ScrollView
-          horizontal
-          scrollEventThrottle={1}
-          showsHorizontalScrollIndicator={false}
-          snapToInterval={CARD_WIDTH}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: {
-                    x: this._animation,
-                  },
-                },
-              },
-            ],
-            { useNativeDriver: true },
-          )}
-          style={styles.scrollView}
-          contentContainerStyle={styles.endPadding}>
-          {this.state.houses.map((house, index) => (
-            <View
-              style={styles.card}
-              key={index}>
-              <View style={styles.textContent}>
-                <Text
-                  numberOfLines={1}
-                  style={styles.cardtitle}>
-                  {"House " + index}
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  style={styles.cardDescription}>
-                  {"Price: " + house.getPrice()}
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  style={styles.cardDescription}>
-                  {"Latitude: " + house.getLatitude()}
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  style={styles.cardDescription}>
-                  {"Longitude: " + house.getLongitude()}
-                </Text>
-              </View>
-            </View>
-          ))}
-        </Animated.ScrollView>
+        <Icon
+          name='home'
+          type='font-awesome'
+          reverse={true}
+          onPress={() => navigate('HouseListScreen', {})}
+        />
       </View>
     );
   }
