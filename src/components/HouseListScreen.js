@@ -23,10 +23,9 @@ type Props = {
 
 type State = {
   houses: List<House>,
-}
+};
 
 export default class HouseListScreen extends React.Component<Props, State> {
-
 	constructor(props: Props) {
 		super(props);
 		this.state = {
@@ -55,7 +54,11 @@ export default class HouseListScreen extends React.Component<Props, State> {
         </View>
   			<ScrollView>
   			{this.state.houses.map((house, index) => (
-  				<CardView curHouse={house} curHouseNumber={index} key={index}></CardView>
+  				<CardView
+            curHouse={house}
+            curHouseNumber={index}
+            key={index}>
+          </CardView>
   			))}
   			</ScrollView>
     </View>
@@ -64,21 +67,21 @@ export default class HouseListScreen extends React.Component<Props, State> {
 }
 
 const CardView = (props) =>
-<Card styles={{card: {marginTop: 20}}}>
-    <CardTitle>
-  		<Text style={styles.title}>{"House Number: " + props.curHouseNumber}</Text>
-  	</CardTitle>
-  	<CardContent>
-  		<Text style={styles.content}>{"House Price: " + props.curHouse.getPrice()}</Text>
-      <Text style={styles.content}>{"Bedrooms: " + "5" + "     " + "Bathrooms: " + "3"}</Text>
-    </CardContent>
-	<CardImage>
-		<Image
-			style={styles.image}
-			source={{uri: 'http://via.placeholder.com/200x200'}}
-		/>
-	</CardImage>
-</Card>;
+  <Card styles={{card: {marginTop: 20}}}>
+      <CardTitle>
+    		<Text style={styles.title}>{"House Number: " + props.curHouseNumber}</Text>
+    	</CardTitle>
+    	<CardContent>
+    		<Text style={styles.content}>{"House Price: " + props.curHouse.getPrice()}</Text>
+        <Text style={styles.content}>{"Bedrooms: " + "5" + "     " + "Bathrooms: " + "3"}</Text>
+      </CardContent>
+  	<CardImage>
+  		<Image
+  			style={styles.image}
+  			source={{uri: 'http://via.placeholder.com/200x200'}}
+  		/>
+  	</CardImage>
+  </Card>
 
 const styles = StyleSheet.create({
   container: {
