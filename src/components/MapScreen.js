@@ -11,6 +11,8 @@ import MapView from 'react-native-maps';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
+import { Text } from 'react-native';
+import { Image } from 'react-native';
 
 const { width, height } = Dimensions.get("window");
 
@@ -73,6 +75,7 @@ export default class MapScreen extends React.Component<Props, State> {
           {this.state.houses.map((house, index) => {
             return (
               <HouseMarker
+                curHouseNumber={index}
                 curHouse={house}
                 key={index}>
               </HouseMarker>
@@ -107,7 +110,20 @@ const HouseMarker = (props) =>
       type='font-awesome'
       color='black'
     />
+    <HouseCallout curHouseNumber={props.curHouseNumber} curHouse={props.curHouse}></HouseCallout>
   </MapView.Marker>
+
+const HouseCallout = (props) =>
+  <MapView.Callout style={styles.calloutContainer}>
+    <Text style={styles.calloutTitle}>{"House Number: " + props.curHouseNumber}</Text>
+    <Text>{"Address: "}</Text>
+    <Text>{"Price: " + props.curHouse.getPrice()}</Text>
+    <Text>{"Bedrooms:  " + "Bathrooms: "}</Text>
+    <Image
+      style={styles.image}
+      source={{uri: 'http://via.placeholder.com/200x200'}}
+    />
+  </MapView.Callout>
 
 const styles = StyleSheet.create({
   container: {
@@ -120,39 +136,16 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
-  scrollView: {
-    position: "absolute",
-    bottom: 30,
-    left: 0,
-    right: 0,
-    paddingVertical: 10,
+  calloutContainer: {
+    width: 200
   },
-  endPadding: {
-    paddingRight: width - CARD_WIDTH,
+  calloutTitle: {
+    fontWeight: 'bold',
+    fontSize: 15
   },
-  card: {
-    padding: 10,
-    elevation: 2,
-    backgroundColor: "#FFF",
-    marginHorizontal: 10,
-    shadowColor: "#000",
-    shadowRadius: 5,
-    shadowOpacity: 0.3,
-    shadowOffset: { x: 2, y: -2 },
-    height: CARD_HEIGHT,
-    width: CARD_WIDTH,
-    overflow: "hidden",
-  },
-  textContent: {
-    flex: 1,
-  },
-  cardtitle: {
-    fontSize: 12,
-    marginTop: 5,
-    fontWeight: "bold",
-  },
-  cardDescription: {
-    fontSize: 12,
-    color: "#444",
-  },
+  image: {
+    height: 100,
+    borderRadius: 10,
+    marginTop: 10
+  }
 });
