@@ -90,20 +90,7 @@ export default class FilterScreen extends React.Component<Props, State> {
 
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Icon style={styles.headericon}
-            name='arrow-left'
-            type='font-awesome'
-            color="white"
-            onPress={() => navigate(
-              'Map',
-              { houses: Filter.getFilter().genHouses()},
-            )}
-          />
-          <Text style={styles.headertext}>
-            Filters
-          </Text>
-        </View>
+        <Header navigation={navigate}></Header>
         <View style={styles.body}>
           <SettingsList>
              <SettingsList.Item
@@ -303,6 +290,22 @@ export default class FilterScreen extends React.Component<Props, State> {
     );
   }
 }
+
+const Header = (props) =>
+  <View style={styles.header}>
+    <Icon style={styles.headericon}
+      name='arrow-left'
+      type='font-awesome'
+      color="white"
+      onPress={() => props.navigation(
+        'Map',
+        { houses: Filter.getFilter().genHouses()},
+      )}
+    />
+    <Text style={styles.headertext}>
+      Filters
+    </Text>
+  </View>
 
 const styles = StyleSheet.create({
   container: {
