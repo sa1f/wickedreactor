@@ -1,5 +1,5 @@
 // @flow
-'use strict'
+'use strict';
 
 import { Component } from 'react';
 import Filter from './src/models/Filter';

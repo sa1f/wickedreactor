@@ -69,7 +69,7 @@ export default class MapScreen extends React.Component<Props, State> {
           ref={(map) => this._map = map}
           initialRegion={this._vancouverRegion}
           style={styles.map}
-          onRegionChangeComplete={region => this._updateHouses(
+          onRegionChangeComplete={(region) => this._updateHouses(
             Filter.getFilter().setRegion(region).genHouses(),
           )}>
           {this.state.houses.map((house, index) => {

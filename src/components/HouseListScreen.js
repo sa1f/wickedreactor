@@ -72,7 +72,7 @@ const CardView = (props) =>
         <Text style={styles.title}>{'House Number: ' + props.curHouseNumber}</Text>
       </CardTitle>
       <CardContent>
-    		<Text style={styles.content}>{'House Price: ' + props.curHouse.getPrice()}</Text>
+        <Text style={styles.content}>{'House Price: ' + props.curHouse.getPrice()}</Text>
         <Text style={styles.content}>{'Bedrooms: ' + '5' + '     ' + 'Bathrooms: ' + '3'}</Text>
       </CardContent>
       <CardImage>
@@ -80,7 +80,7 @@ const CardView = (props) =>
           style={styles.image}
           source={{uri: 'http://via.placeholder.com/200x200'}}
         />
-  	</CardImage>
+      </CardImage>
   </Card>;
 
 const styles = StyleSheet.create({
