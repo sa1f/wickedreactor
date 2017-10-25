@@ -1,5 +1,5 @@
 // @flow
-'use strict'
+'use strict';
 
 import FilterMockAPI from '../api/FilterMockAPI';
 import House from './House';

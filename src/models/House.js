@@ -1,5 +1,5 @@
 // @flow
-'use strict'
+'use strict';
 
 import { List } from 'immutable';
 
@@ -43,7 +43,7 @@ export default class House {
   }
 
   static createHouses(objects: List<Object> | Array<Object>): List<House> {
-    return List(objects.map(object =>
+    return List(objects.map((object) =>
       new House((object: HouseData)),
     ));
   }

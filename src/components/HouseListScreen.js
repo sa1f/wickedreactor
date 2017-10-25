@@ -1,5 +1,5 @@
 // @flow
-'use strict'
+'use strict';
 
 import React, {Component} from 'react';
 import { Icon } from 'react-native-elements';
@@ -42,7 +42,7 @@ export default class HouseListScreen extends React.Component<Props, State> {
           <Icon style={styles.headericon}
             name='arrow-left'
             type='font-awesome'
-            color="white"
+            color='white'
             onPress={() => navigate(
               'Map',
               { houses: Filter.getFilter().genHouses()},
@@ -52,15 +52,15 @@ export default class HouseListScreen extends React.Component<Props, State> {
             Houses
           </Text>
         </View>
-  			<ScrollView>
-  			{this.state.houses.map((house, index) => (
-  				<CardView
-            curHouse={house}
-            curHouseNumber={index}
-            key={index}>
-          </CardView>
-  			))}
-  			</ScrollView>
+        <ScrollView>
+          {this.state.houses.map((house, index) => (
+            <CardView
+              curHouse={house}
+              curHouseNumber={index}
+              key={index}>
+            </CardView>
+          ))}
+        </ScrollView>
     </View>
     );
   }
@@ -69,19 +69,19 @@ export default class HouseListScreen extends React.Component<Props, State> {
 const CardView = (props) =>
   <Card styles={{card: {marginTop: 20}}}>
       <CardTitle>
-    		<Text style={styles.title}>{"House Number: " + props.curHouseNumber}</Text>
-    	</CardTitle>
-    	<CardContent>
-    		<Text style={styles.content}>{"House Price: " + props.curHouse.getPrice()}</Text>
-        <Text style={styles.content}>{"Bedrooms: " + "5" + "     " + "Bathrooms: " + "3"}</Text>
+        <Text style={styles.title}>{'House Number: ' + props.curHouseNumber}</Text>
+      </CardTitle>
+      <CardContent>
+    		<Text style={styles.content}>{'House Price: ' + props.curHouse.getPrice()}</Text>
+        <Text style={styles.content}>{'Bedrooms: ' + '5' + '     ' + 'Bathrooms: ' + '3'}</Text>
       </CardContent>
-  	<CardImage>
-  		<Image
-  			style={styles.image}
-  			source={{uri: 'http://via.placeholder.com/200x200'}}
-  		/>
+      <CardImage>
+        <Image
+          style={styles.image}
+          source={{uri: 'http://via.placeholder.com/200x200'}}
+        />
   	</CardImage>
-  </Card>
+  </Card>;
 
 const styles = StyleSheet.create({
   container: {

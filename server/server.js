@@ -6,12 +6,12 @@
 var express = require('express');
 var app = express();
 
-// Just telling express to use the public folder for static files 
+// Just telling express to use the public folder for static files
 app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
 // could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
-app.get("/", function (request, response) {
+app.get('/', function (request, response) {
   //response.sendFile(__dirname + '/views/index.html');
   //response.sendStatus(200);
   //dreams.push(request.query.dream);
@@ -41,7 +41,7 @@ app.get("/", function (request, response) {
 
 
     realtor.post(opts)
-        .then(data => {
+        .then((data) => {
             //json response
             var results = data.Results;
             var properties = [];
@@ -54,13 +54,13 @@ app.get("/", function (request, response) {
             console.log(properties.length);
         })
 
-        .catch(err => {
+        .catch((err) => {
             console.log('error :(');
         });
 
 });
 
 // listen for requests :)
-var listener = app.listen("8888", function () {
-    console.log('Your app is listening on http://localhost:' +  "8888");
+var listener = app.listen('8888', function () {
+    console.log('Your app is listening on http://localhost:' +  '8888');
 });

@@ -1,5 +1,5 @@
 // @flow
-'use strict'
+'use strict';
 
 import { Component } from 'react';
 import { Dimensions } from 'react-native';
@@ -14,7 +14,7 @@ import { View } from 'react-native';
 import { Text } from 'react-native';
 import { Image } from 'react-native';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 const CARD_HEIGHT = height / 4;
 const CARD_WIDTH = CARD_HEIGHT;
@@ -66,7 +66,7 @@ export default class MapScreen extends React.Component<Props, State> {
     return (
       <View style={styles.container}>
         <MapView
-          ref={map => this._map = map}
+          ref={(map) => this._map = map}
           initialRegion={this._vancouverRegion}
           style={styles.map}
           onRegionChangeComplete={region => this._updateHouses(
@@ -111,19 +111,19 @@ const HouseMarker = (props) =>
       color='black'
     />
     <HouseCallout curHouseNumber={props.curHouseNumber} curHouse={props.curHouse}></HouseCallout>
-  </MapView.Marker>
+  </MapView.Marker>;
 
 const HouseCallout = (props) =>
   <MapView.Callout style={styles.calloutContainer}>
-    <Text style={styles.calloutTitle}>{"House Number: " + props.curHouseNumber}</Text>
-    <Text>{"Address: "}</Text>
-    <Text>{"Price: " + props.curHouse.getPrice()}</Text>
-    <Text>{"Bedrooms:  " + "Bathrooms: "}</Text>
+    <Text style={styles.calloutTitle}>{'House Number: ' + props.curHouseNumber}</Text>
+    <Text>{'Address: '}</Text>
+    <Text>{'Price: ' + props.curHouse.getPrice()}</Text>
+    <Text>{'Bedrooms:  ' + 'Bathrooms: '}</Text>
     <Image
       style={styles.image}
       source={{uri: 'http://via.placeholder.com/200x200'}}
     />
-  </MapView.Callout>
+  </MapView.Callout>;
 
 const styles = StyleSheet.create({
   container: {

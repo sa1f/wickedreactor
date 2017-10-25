@@ -1,5 +1,5 @@
 // @flow
-'use strict'
+'use strict';
 
 import Filter from '../models/Filter';
 import House from '../models/House';
@@ -10,7 +10,7 @@ export default class FilterMockAPI {
 
   static genHouses(): List<House> {
     const filter = Filter.getFilter();
-    return this._getHouses().filter(houseData =>
+    return this._getHouses().filter((houseData) =>
       houseData.getLatitude() > filter.getMinimumLatitude() &&
       houseData.getLatitude() < filter.getMaximumLatitude() &&
       houseData.getLongitude() > filter.getMinimumLongitude() &&
