@@ -12,6 +12,8 @@ import { List } from 'immutable';
 import House from '../models/House';
 import Filter from '../models/Filter';
 import { Card } from 'react-native-card-view';
+import { CardAction } from 'react-native-card-view';
+import Button from 'react-native-button';
 import { CardImage } from 'react-native-card-view';
 import { CardTitle } from 'react-native-card-view';
 import { CardContent } from 'react-native-card-view';
@@ -57,7 +59,8 @@ export default class HouseListScreen extends React.Component<Props, State> {
             <CardView
               curHouse={house}
               curHouseNumber={index}
-              key={index}>
+              key={index}
+              navigationProp={navigate}>
             </CardView>
           ))}
         </ScrollView>
@@ -81,6 +84,13 @@ const CardView = (props) =>
           source={{uri: 'http://via.placeholder.com/200x200'}}
         />
       </CardImage>
+      <CardAction >
+        <Button
+          style={styles.button}
+          onPress={() => props.navigationProp('HouseDetailScreen', {house: props.curHouse})}>
+          View Details
+        </Button>
+      </CardAction>
   </Card>;
 
 const styles = StyleSheet.create({

@@ -6,6 +6,7 @@ import Filter from './src/models/Filter';
 import FilterScreen from './src/components/FilterScreen';
 import MapScreen from './src/components/MapScreen';
 import HouseListScreen from './src/components/HouseListScreen';
+import HouseDetailScreen from './src/components/HouseDetailScreen';
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import { withMappedNavigationProps } from 'react-navigation-props-mapper';
@@ -14,6 +15,7 @@ const Navigator = StackNavigator({
   Map: { screen: withMappedNavigationProps(MapScreen) },
   Filter: { screen: withMappedNavigationProps(FilterScreen) },
   HouseListScreen: { screen: withMappedNavigationProps(HouseListScreen) },
+  HouseDetailScreen: { screen: withMappedNavigationProps(HouseDetailScreen) }
 },
 {
   headerMode: 'none',

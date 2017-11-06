@@ -77,7 +77,8 @@ export default class MapScreen extends React.Component<Props, State> {
               <HouseMarker
                 curHouseNumber={index}
                 curHouse={house}
-                key={index}>
+                key={index}
+                navigationProp={navigate}>
               </HouseMarker>
             );
           })}
@@ -110,11 +111,12 @@ const HouseMarker = (props) =>
       type='font-awesome'
       color='black'
     />
-    <HouseCallout curHouseNumber={props.curHouseNumber} curHouse={props.curHouse}></HouseCallout>
+    <HouseCallout curHouseNumber={props.curHouseNumber} curHouse={props.curHouse} navigationProp={props.navigationProp}></HouseCallout>
   </MapView.Marker>;
 
 const HouseCallout = (props) =>
-  <MapView.Callout style={styles.calloutContainer}>
+  <MapView.Callout style={styles.calloutContainer}
+    onPress={() => {props.navigationProp('HouseDetailScreen', {house: props.curHouse})}}>
     <Text style={styles.calloutTitle}>{'House Number: ' + props.curHouseNumber}</Text>
     <Text>{'Address: '}</Text>
     <Text>{'Price: ' + props.curHouse.getPrice()}</Text>
