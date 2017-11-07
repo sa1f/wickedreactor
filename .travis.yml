@@ -14,3 +14,7 @@ android: #1.3
   - addon-google_apis-google-16
 script: 
 - cd android && ./gradlew assembleRelease #3
+licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
