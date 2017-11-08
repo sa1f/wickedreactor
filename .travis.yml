@@ -16,4 +16,4 @@ android: #1.3
   - addon-google_apis-google-16
 script: 
 - cd android && ./gradlew assembleRelease #3
-- cd server && npm test
+- cd ../server && npm test
