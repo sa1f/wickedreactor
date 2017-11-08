@@ -7,10 +7,11 @@
   "description": "What am I about?",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "test": "jest"
   },
   "dependencies": {
     "express": "^4.16.2",
+    "jest": "^21.2.1",
     "realtorca": "^1.0.0"
   },
   "engines": {
@@ -18,9 +19,6 @@
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/welcome-project"
-  },
-  "scripts": {
-	"test": "jest"
   },
   "license": "MIT",
   "keywords": [
