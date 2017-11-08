@@ -19,6 +19,9 @@
   "repository": {
     "url": "https://glitch.com/edit/#!/welcome-project"
   },
+  "scripts": {
+	"test": "jest"
+  },
   "license": "MIT",
   "keywords": [
     "node",
