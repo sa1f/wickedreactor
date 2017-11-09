@@ -10,10 +10,12 @@ android: #1.3
   - build-tools-26.0.1
   - build-tools-23.0.1
   - android-23
+  - android-26
+  - android-25
   - extra-android-m2repository
   - extra-google-google_play_services
   - extra-google-m2repository
   - addon-google_apis-google-16
 script: 
 - cd android && ./gradlew assembleRelease #3
-- cd ../server && npm test
+- cd ../ && npm run test
