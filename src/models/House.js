@@ -44,7 +44,7 @@ export default class House {
 
   static createHouses(objects: List<Object> | Array<Object>): List<House> {
     return List(objects.map((object) =>
-      new House((object: HouseData)),
+      new House(this._assertIsHouseData(object)),
     ));
   }
 
@@ -86,5 +86,17 @@ export default class House {
 
   getBusStops(): List<string> {
     return this._busStops;
+  }
+
+  static _assertIsHouseData(object: Object): Object {
+    const keys = Object.keys(object);
+
+    if (!keys.includes("latitude") ||
+      !keys.includes("longitude") ||
+      !keys.includes("price")) {
+      throw new TypeError();
+    }
+
+    return object;
   }
 }
