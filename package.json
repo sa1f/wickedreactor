@@ -8,6 +8,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "express": "^4.16.2",
     "immutable": "^3.8.2",
     "jest-cli": "^21.2.1",
     "native-base": "^2.3.3",
@@ -23,6 +24,7 @@
     "react-native-vector-icons": "^4.4.2",
     "react-navigation": "^1.0.0-beta.13",
     "react-navigation-props-mapper": "^0.1.2",
+    "realtorca": "^1.0.0",
     "supertest": "^3.0.0"
   },
   "devDependencies": {
