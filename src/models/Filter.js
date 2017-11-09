@@ -1,11 +1,16 @@
 // @flow
 'use strict';
 
-import FilterMockAPI from '../api/FilterMockAPI';
+import FilterMockAPI from '../mocks/FilterMockAPI';
 import House from './House';
 import { List } from 'immutable';
 
-import type { Region } from '../components/MapScreen';
+export type Region = {
+  latitude: number,
+  longitude: number,
+  latitudeDelta: number,
+  longitudeDelta: number,
+};
 
 export default class Filter {
   static _filter: Filter;
@@ -32,8 +37,21 @@ export default class Filter {
     return this._filter;
   }
 
-  genHouses(): List<House> {
+  async genHouses(): Promise<List<House>> {
     return FilterMockAPI.genHouses();
+  }
+
+  // genHouses() code for when we are no longer using a mock API call
+  async getHouse_REAL(): Promise<List<House>> {
+    const response = await fetch(new Request(
+      'http://localhost:8888',
+      {
+        method: 'POST',
+        body:  JSON.stringify(Filter.getFilter())
+      }));
+    const responseJson = await response.json();
+
+    return House.createHouses(responseJson.houses);
   }
 
   setRegion(region: Region): this {

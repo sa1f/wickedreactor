@@ -9,6 +9,7 @@ import { Icon } from 'react-native-elements';
 import { List } from 'immutable';
 import MapView from 'react-native-maps';
 import React from 'react';
+import type { Region } from '../models/Filter';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import { Text } from 'react-native';
@@ -18,13 +19,6 @@ const { width, height } = Dimensions.get('window');
 
 const CARD_HEIGHT = height / 4;
 const CARD_WIDTH = CARD_HEIGHT;
-
-export type Region = {
-  latitude: number,
-  longitude: number,
-  latitudeDelta: number,
-  longitudeDelta: number,
-};
 
 type Props = {
   navigation: any,
@@ -56,7 +50,8 @@ export default class MapScreen extends React.Component<Props, State> {
     };
   }
 
-  _updateHouses(houses: List<House>) {
+  async _updateHouses(region: Region) {
+    const houses = await Filter.getFilter().setRegion(region).genHouses();
     this.setState({houses});
   }
 
@@ -69,9 +64,7 @@ export default class MapScreen extends React.Component<Props, State> {
           ref={(map) => this._map = map}
           initialRegion={this._vancouverRegion}
           style={styles.map}
-          onRegionChangeComplete={(region) => this._updateHouses(
-            Filter.getFilter().setRegion(region).genHouses(),
-          )}>
+          onRegionChangeComplete={(region) => this._updateHouses(region)}>
           {this.state.houses.map((house, index) => {
             return (
               <HouseMarker
@@ -93,7 +86,7 @@ export default class MapScreen extends React.Component<Props, State> {
           name='home'
           type='font-awesome'
           reverse={true}
-          onPress={() => navigate('HouseListScreen', {})}
+          onPress={() => navigate('HouseListScreen', {houses: this.state.houses})}
         />
       </View>
     );
@@ -111,16 +104,20 @@ const HouseMarker = (props) =>
       type='font-awesome'
       color='black'
     />
-    <HouseCallout curHouseNumber={props.curHouseNumber} curHouse={props.curHouse} navigationProp={props.navigationProp}></HouseCallout>
+    <HouseCallout
+      curHouseNumber={props.curHouseNumber}
+      curHouse={props.curHouse}
+      navigationProp={props.navigationProp}
+    />
   </MapView.Marker>;
 
 const HouseCallout = (props) =>
   <MapView.Callout style={styles.calloutContainer}
     onPress={() => {props.navigationProp('HouseDetailScreen', {house: props.curHouse})}}>
-    <Text style={styles.calloutTitle}>{'House Number: ' + props.curHouseNumber}</Text>
+    <Text style={styles.calloutTitle}>{`House Number: ${props.curHouseNumber}`}</Text>
     <Text>{'Address: '}</Text>
-    <Text>{'Price: ' + props.curHouse.getPrice()}</Text>
-    <Text>{'Bedrooms:  ' + 'Bathrooms: '}</Text>
+    <Text>{`Price: ${props.curHouse.getPrice()}`}</Text>
+    <Text>{`Bedrooms: Bathrooms: `}</Text>
     <Image
       style={styles.image}
       source={{uri: 'http://via.placeholder.com/200x200'}}

@@ -2,11 +2,11 @@
 'use strict';
 
 import { Component } from 'react';
-import Filter from './src/models/Filter';
-import FilterScreen from './src/components/FilterScreen';
-import MapScreen from './src/components/MapScreen';
-import HouseListScreen from './src/components/HouseListScreen';
-import HouseDetailScreen from './src/components/HouseDetailScreen';
+import { List } from 'immutable';
+import FilterScreen from './src/screens/FilterScreen';
+import MapScreen from './src/screens/MapScreen';
+import HouseListScreen from './src/screens/HouseListScreen';
+import HouseDetailScreen from './src/screens/HouseDetailScreen';
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import { withMappedNavigationProps } from 'react-navigation-props-mapper';
@@ -23,6 +23,6 @@ const Navigator = StackNavigator({
 
 export default class Remaximum extends React.Component<{}> {
   render() {
-    return <Navigator screenProps={{houses: Filter.getFilter().genHouses()}}/>;
+    return <Navigator screenProps={{houses: List()}}/>;
   }
 }

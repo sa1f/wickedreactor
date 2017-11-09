@@ -23,17 +23,10 @@ type Props = {
   houses: List<House>,
 };
 
-type State = {
-  houses: List<House>,
-};
-
-export default class HouseListScreen extends React.Component<Props, State> {
-	constructor(props: Props) {
-		super(props);
-		this.state = {
-			houses: this.props.houses,
-		};
-	}
+export default class HouseListScreen extends React.Component<Props, {}> {
+  constructor(props: Props) {
+    super(props);
+  }
 
   render () {
     const { navigate } = this.props.navigation;
@@ -45,17 +38,14 @@ export default class HouseListScreen extends React.Component<Props, State> {
             name='arrow-left'
             type='font-awesome'
             color='white'
-            onPress={() => navigate(
-              'Map',
-              { houses: Filter.getFilter().genHouses()},
-            )}
+            onPress={() => navigate('Map', { houses: this.props.houses })}
           />
           <Text style={styles.headertext}>
             Houses
           </Text>
         </View>
         <ScrollView>
-          {this.state.houses.map((house, index) => (
+          {this.props.houses.map((house, index) => (
             <CardView
               curHouse={house}
               curHouseNumber={index}
@@ -64,7 +54,7 @@ export default class HouseListScreen extends React.Component<Props, State> {
             </CardView>
           ))}
         </ScrollView>
-    </View>
+      </View>
     );
   }
 }
@@ -72,11 +62,17 @@ export default class HouseListScreen extends React.Component<Props, State> {
 const CardView = (props) =>
   <Card styles={{card: {marginTop: 20}}}>
       <CardTitle>
-        <Text style={styles.title}>{'House Number: ' + props.curHouseNumber}</Text>
+        <Text style={styles.title}>
+          {`House Number: ${props.curHouseNumber}`}
+        </Text>
       </CardTitle>
       <CardContent>
-        <Text style={styles.content}>{'House Price: ' + props.curHouse.getPrice()}</Text>
-        <Text style={styles.content}>{'Bedrooms: ' + '5' + '     ' + 'Bathrooms: ' + '3'}</Text>
+        <Text style={styles.content}>
+          {`House Price: ${props.curHouse.getPrice()}`}
+        </Text>
+        <Text style={styles.content}>
+          {`Bedrooms: 5     Bathrooms: 3`}
+        </Text>
       </CardContent>
       <CardImage>
         <Image
@@ -87,7 +83,8 @@ const CardView = (props) =>
       <CardAction >
         <Button
           style={styles.button}
-          onPress={() => props.navigationProp('HouseDetailScreen', {house: props.curHouse})}>
+          onPress={() =>
+            props.navigationProp('HouseDetailScreen', {house: props.curHouse})}>
           View Details
         </Button>
       </CardAction>

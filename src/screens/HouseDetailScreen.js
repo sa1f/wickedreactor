@@ -18,27 +18,21 @@ import { CardContent } from 'react-native-card-view';
 
 type Props = {
   navigation: any,
-  houses: List<House>,
   house: House
 };
 
-type State = {
-  houses: List<House>,
-  house: House
-};
+export default class HouseDetailScreen extends React.Component<Props, {}> {
+  constructor(props: Props) {
+    super(props);
+  }
 
-export default class HouseDetailScreen extends React.Component<Props, State> {
-	constructor(props: Props) {
-		super(props);
-		this.state = {
-			houses: this.props.houses,
-      house: this.props.house
-		};
-	}
+  async _goToMapScreen() {
+    const houses = await Filter.getFilter().genHouses();
+    const { navigate } = this.props.navigation;
+    navigate('Map', { houses: houses });
+  }
 
   render () {
-    const { navigate } = this.props.navigation;
-
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -46,10 +40,7 @@ export default class HouseDetailScreen extends React.Component<Props, State> {
             name='arrow-left'
             type='font-awesome'
             color='white'
-            onPress={() => navigate(
-              'Map',
-              { houses: Filter.getFilter().genHouses()},
-            )}
+            onPress={() => this._goToMapScreen()}
           />
           <Text style={styles.headertext}>
             House Details
@@ -72,56 +63,56 @@ export default class HouseDetailScreen extends React.Component<Props, State> {
             Price
           </Text>
           <Text style={styles.attributeContent}>
-            {"$" + this.state.house.getPrice()}
+            {`$ ${this.props.house.getPrice()}`}
           </Text>
 
           <Text style={styles.attributeTitle}>
             Schools
           </Text>
           <Text style={styles.attributeContent}>
-            {this.state.house.getSchools()}
+            {this.props.house.getSchools()}
           </Text>
 
           <Text style={styles.attributeTitle}>
             Libraries
           </Text>
           <Text style={styles.attributeContent}>
-            {this.state.house.getLibraries()}
+            {this.props.house.getLibraries()}
           </Text>
 
           <Text style={styles.attributeTitle}>
             Cultural Spaces
           </Text>
           <Text style={styles.attributeContent}>
-            {this.state.house.getCulturalSpaces()}
+            {this.props.house.getCulturalSpaces()}
           </Text>
 
           <Text style={styles.attributeTitle}>
             Parks
           </Text>
           <Text style={styles.attributeContent}>
-            {this.state.house.getParks()}
+            {this.props.house.getParks()}
           </Text>
 
           <Text style={styles.attributeTitle}>
             Community Centers
           </Text>
           <Text style={styles.attributeContent}>
-            {this.state.house.getRecreationalCenters()}
+            {this.props.house.getRecreationalCenters()}
           </Text>
 
           <Text style={styles.attributeTitle}>
             Charging Stations
           </Text>
           <Text style={styles.attributeContent}>
-            {this.state.house.getChargingStations()}
+            {this.props.house.getChargingStations()}
           </Text>
 
           <Text style={styles.attributeTitle}>
             Bus Stops
           </Text>
           <Text style={styles.attributeContent}>
-            {this.state.house.getBusStops()}
+            {this.props.house.getBusStops()}
           </Text>
         </ScrollView>
     </View>

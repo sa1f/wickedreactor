@@ -21,8 +21,8 @@
     "react-navigation": "^1.0.0-beta.13",
     "react-navigation-props-mapper": "^0.1.2",
     "react-native-card-view": "https://github.com/jacklam718/react-native-card-view.git",
-	"react-native-button": "^2.1.0"
-},
+    "react-native-button": "^2.1.0"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-jest": "21.2.0",
