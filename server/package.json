@@ -12,7 +12,8 @@
   "dependencies": {
     "express": "^4.16.2",
     "jest": "^21.2.1",
-    "realtorca": "^1.0.0"
+    "realtorca": "^1.0.0",
+    "supertest": "^3.0.0"
   },
   "engines": {
     "node": "8.x"
