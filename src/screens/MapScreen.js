@@ -17,9 +17,6 @@ import { Image } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-const CARD_HEIGHT = height / 4;
-const CARD_WIDTH = CARD_HEIGHT;
-
 type Props = {
   navigation: any,
   houses: List<House>,
@@ -136,15 +133,15 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   calloutContainer: {
-    width: 200
+    width: 200,
   },
   calloutTitle: {
     fontWeight: 'bold',
-    fontSize: 15
+    fontSize: 15,
   },
   image: {
     height: 100,
     borderRadius: 10,
-    marginTop: 10
+    marginTop: 10,
   }
 });

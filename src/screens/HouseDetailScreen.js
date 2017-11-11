@@ -8,17 +8,12 @@ import { Text } from 'react-native';
 import { ScrollView } from 'react-native';
 import { Image } from 'react-native';
 import { View } from 'react-native';
-import { List } from 'immutable';
 import House from '../models/House';
 import Filter from '../models/Filter';
-import { Card } from 'react-native-card-view';
-import { CardImage } from 'react-native-card-view';
-import { CardTitle } from 'react-native-card-view';
-import { CardContent } from 'react-native-card-view';
 
 type Props = {
   navigation: any,
-  house: House
+  house: House,
 };
 
 export default class HouseDetailScreen extends React.Component<Props, {}> {
@@ -143,33 +138,21 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
     fontSize:20,
   },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    backgroundColor: 'transparent',
-    marginBottom: -30,
-    marginRight: 130
-  },
-	content: {
-		fontSize: 20,
-		backgroundColor: 'transparent',
-    marginRight: 60,
-	},
   image: {
     marginTop: 10,
     marginLeft: 10,
     width: 200,
-    height: 200
+    height: 200,
   },
   attributeTitle: {
     fontSize: 20,
     marginTop: 10,
-    marginLeft: 10
+    marginLeft: 10,
   },
   attributeContent: {
     fontSize: 15,
     marginTop: 5,
     marginBottom: 5,
-    marginLeft: 10
+    marginLeft: 10,
   }
 });

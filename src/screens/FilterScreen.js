@@ -28,7 +28,7 @@ const FilterField = {
   busStopRange: 'busStopRange',
 };
 
-type FilterFieldType = $Keys<typeof FilterField>
+type FilterFieldType = $Keys<typeof FilterField>;
 
 type Props = {
   navigation: any,
@@ -339,6 +339,6 @@ const styles = StyleSheet.create({
   },
   filteritem: {
     color:'black',
-    fontSize: 16
+    fontSize: 16,
   }
 });

@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     backgroundColor: 'transparent',
     marginBottom: -30,
-    marginRight: 130
+    marginRight: 130,
   },
 	content: {
 		fontSize: 20,
@@ -128,6 +128,6 @@ const styles = StyleSheet.create({
   image: {
     marginRight: 115,
     width: 200,
-    height: 200
+    height: 200,
   }
 });
