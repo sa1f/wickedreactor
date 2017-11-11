@@ -16,6 +16,7 @@ import { Text } from 'react-native';
 import { Image } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
+const SCREEN_WIDTH = width;
 
 type Props = {
   navigation: any,
@@ -73,18 +74,23 @@ export default class MapScreen extends React.Component<Props, State> {
             );
           })}
         </MapView>
-        <Icon
-          name='filter'
-          type='font-awesome'
-          reverse={true}
-          onPress={() => navigate('Filter', {})}
-        />
-        <Icon
-          name='home'
-          type='font-awesome'
-          reverse={true}
-          onPress={() => navigate('HouseListScreen', {houses: this.state.houses})}
-        />
+        <View style={styles.filterIcon}>
+          <Icon
+            name='filter'
+            type='font-awesome'
+            reverse={true}
+            onPress={() => navigate('Filter', {})}
+          />
+        </View>
+
+        <View style={styles.houseIcon}>
+          <Icon
+            name='home'
+            type='font-awesome'
+            reverse={true}
+            onPress={() => navigate('HouseListScreen', {houses: this.state.houses})}
+          />
+        </View>
       </View>
     );
   }
@@ -102,6 +108,7 @@ const HouseMarker = (props) =>
       color='black'
     />
     <HouseCallout
+      style={styles.calloutContainer}
       curHouseNumber={props.curHouseNumber}
       curHouse={props.curHouse}
       navigationProp={props.navigationProp}
@@ -110,11 +117,11 @@ const HouseMarker = (props) =>
 
 const HouseCallout = (props) =>
   <MapView.Callout style={styles.calloutContainer}
+    toolTip={true}
     onPress={() => {props.navigationProp('HouseDetailScreen', {house: props.curHouse})}}>
-    <Text style={styles.calloutTitle}>{`House Number: ${props.curHouseNumber}`}</Text>
-    <Text>{'Address: '}</Text>
-    <Text>{`Price: ${props.curHouse.getPrice()}`}</Text>
-    <Text>{`Bedrooms: Bathrooms: `}</Text>
+    <Text style={styles.calloutAddress}>{'Address: '}</Text>
+    <Text style={styles.calloutPrice}>{`Price: $${props.curHouse.getPrice()}`}</Text>
+    <Text style={styles.calloutBedBath}>{'Bedrooms:    Bathrooms:  '}</Text>
     <Image
       style={styles.image}
       source={{uri: 'http://via.placeholder.com/200x200'}}
@@ -134,14 +141,36 @@ const styles = StyleSheet.create({
   },
   calloutContainer: {
     width: 200,
+    borderRadius: 10,
   },
-  calloutTitle: {
+  calloutAddress: {
     fontWeight: 'bold',
     fontSize: 15,
+    marginTop: 5,
+  },
+  calloutPrice: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    marginTop: 5,
+  },
+  calloutBedBath: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    marginTop: 5,
   },
   image: {
     height: 100,
-    borderRadius: 10,
     marginTop: 10,
+    marginBottom: 5,
+  },
+  filterIcon: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+  houseIcon: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
   }
 });

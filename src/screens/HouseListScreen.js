@@ -2,6 +2,7 @@
 'use strict';
 
 import React, {Component} from 'react';
+import { Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
 import { Text } from 'react-native';
@@ -17,6 +18,9 @@ import Button from 'react-native-button';
 import { CardImage } from 'react-native-card-view';
 import { CardTitle } from 'react-native-card-view';
 import { CardContent } from 'react-native-card-view';
+
+const { width, height } = Dimensions.get('window');
+const SCREEN_WIDTH = width;
 
 type Props = {
   navigation: any,
@@ -60,58 +64,48 @@ export default class HouseListScreen extends React.Component<Props, {}> {
 }
 
 const CardView = (props) =>
-  <Card styles={{card: {marginTop: 20}}}>
-      <CardTitle>
-        <Text style={styles.title}>
-          {`House Number: ${props.curHouseNumber}`}
-        </Text>
-      </CardTitle>
-      <CardContent>
-        <Text style={styles.content}>
-          {`House Price: ${props.curHouse.getPrice()}`}
-        </Text>
-        <Text style={styles.content}>
-          {`Bedrooms: 5     Bathrooms: 3`}
-        </Text>
-      </CardContent>
+  <Card style={styles.card}>
       <CardImage>
         <Image
           style={styles.image}
-          source={{uri: 'http://via.placeholder.com/200x200'}}
-        />
+          source={{uri: 'http://via.placeholder.com/200x400'}}>
+          <Text style={styles.cardText}>{'Address: '}</Text>
+          <Text style={styles.cardText}>{`Price: $${props.curHouse.getPrice()}`}</Text>
+          <Text style={styles.cardText}>{'Bedrooms:   Bathrooms: '}</Text>
+          <CardAction >
+            <Button
+              style={styles.cardButton}
+              onPress={() =>
+                props.navigationProp('HouseDetailScreen', {house: props.curHouse})}>
+              View Details
+            </Button>
+          </CardAction>
+        </Image>
       </CardImage>
-      <CardAction >
-        <Button
-          style={styles.button}
-          onPress={() =>
-            props.navigationProp('HouseDetailScreen', {house: props.curHouse})}>
-          View Details
-        </Button>
-      </CardAction>
   </Card>;
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
-    backgroundColor:'#f6f6f6',
+    flex: 1,
+    backgroundColor: '#f6f6f6',
   },
   header: {
-    borderBottomWidth:1,
-    backgroundColor:'#263238',
-    borderColor:'#c8c7cc',
+    borderBottomWidth: 1,
+    backgroundColor: '#263238',
+    borderColor: '#c8c7cc',
     flexDirection: 'row',
   },
   headericon: {
-    marginLeft:15,
-    marginTop:15,
+    marginLeft: 15,
+    marginTop: 15,
   },
   headertext: {
-    color:'white',
-    marginTop:15,
-    marginBottom:15,
-    marginLeft:25,
-    fontWeight:'bold',
-    fontSize:20,
+    color: 'white',
+    marginTop: 15,
+    marginBottom: 15,
+    marginLeft: 25,
+    fontWeight: 'bold',
+    fontSize: 20,
   },
   title: {
     fontSize: 30,
@@ -126,8 +120,20 @@ const styles = StyleSheet.create({
     marginRight: 60,
 	},
   image: {
-    marginRight: 115,
-    width: 200,
+    width: SCREEN_WIDTH,
     height: 200,
+  },
+  card: {
+    marginTop: 15,
+  },
+  cardText: {
+    color: 'white',
+    marginLeft: 10,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  cardButton: {
+    marginTop: 80,
+    marginLeft: 150,
   }
 });

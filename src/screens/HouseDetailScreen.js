@@ -2,6 +2,7 @@
 'use strict';
 
 import React, {Component} from 'react';
+import { Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { StyleSheet } from 'react-native';
 import { Text } from 'react-native';
@@ -10,11 +11,18 @@ import { Image } from 'react-native';
 import { View } from 'react-native';
 import House from '../models/House';
 import Filter from '../models/Filter';
+import Collapsible from 'react-native-collapsible';
+import Accordion from 'react-native-collapsible/Accordion';
+
+const { width, height } = Dimensions.get('window');
+const SCREEN_WIDTH = width;
 
 type Props = {
   navigation: any,
   house: House,
 };
+
+let SECTIONS = [];
 
 export default class HouseDetailScreen extends React.Component<Props, {}> {
   constructor(props: Props) {
@@ -25,6 +33,27 @@ export default class HouseDetailScreen extends React.Component<Props, {}> {
     const houses = await Filter.getFilter().genHouses();
     const { navigate } = this.props.navigation;
     navigate('Map', { houses: houses });
+  }
+
+  _renderHeader(section) {
+    return (
+      <View style={styles.accordianHeader}>
+        <Icon
+          style={styles.icon}
+          name={section.iconName}
+          type='font-awesome'
+        />
+        <Text style={styles.accordianText}>{section.title}</Text>
+      </View>
+    );
+  }
+
+  _renderContent(section) {
+    return (
+      <View style={styles.accordianContent}>
+        <Text>{section.content}</Text>
+      </View>
+    );
   }
 
   render () {
@@ -41,75 +70,62 @@ export default class HouseDetailScreen extends React.Component<Props, {}> {
             House Details
           </Text>
         </View>
-        <ScrollView>
-          <Image
-            style={styles.image}
-            source={{uri: 'http://via.placeholder.com/200x200'}}
-          />
+        <Image
+          style={styles.image}
+          source={{uri: 'http://via.placeholder.com/200x200'}}
+        />
 
-          <Text style={styles.attributeTitle}>
-            Address
-          </Text>
-          <Text style={styles.attributeContent}>
-            Insert address here
-          </Text>
-
-          <Text style={styles.attributeTitle}>
-            Price
-          </Text>
-          <Text style={styles.attributeContent}>
-            {`$ ${this.props.house.getPrice()}`}
-          </Text>
-
-          <Text style={styles.attributeTitle}>
-            Schools
-          </Text>
-          <Text style={styles.attributeContent}>
-            {this.props.house.getSchools()}
-          </Text>
-
-          <Text style={styles.attributeTitle}>
-            Libraries
-          </Text>
-          <Text style={styles.attributeContent}>
-            {this.props.house.getLibraries()}
-          </Text>
-
-          <Text style={styles.attributeTitle}>
-            Cultural Spaces
-          </Text>
-          <Text style={styles.attributeContent}>
-            {this.props.house.getCulturalSpaces()}
-          </Text>
-
-          <Text style={styles.attributeTitle}>
-            Parks
-          </Text>
-          <Text style={styles.attributeContent}>
-            {this.props.house.getParks()}
-          </Text>
-
-          <Text style={styles.attributeTitle}>
-            Community Centers
-          </Text>
-          <Text style={styles.attributeContent}>
-            {this.props.house.getRecreationalCenters()}
-          </Text>
-
-          <Text style={styles.attributeTitle}>
-            Charging Stations
-          </Text>
-          <Text style={styles.attributeContent}>
-            {this.props.house.getChargingStations()}
-          </Text>
-
-          <Text style={styles.attributeTitle}>
-            Bus Stops
-          </Text>
-          <Text style={styles.attributeContent}>
-            {this.props.house.getBusStops()}
-          </Text>
-        </ScrollView>
+        <Accordion
+          sections={[
+            {
+              title: 'Address',
+              content: 'Insert address here',
+              iconName: 'home',
+            },
+            {
+              title: 'Price',
+              content: `$ ${this.props.house.getPrice()}`,
+              iconName: 'dollar',
+            },
+            {
+              title: 'Schools',
+              content: this.props.house.getSchools(),
+              iconName: 'pencil',
+            },
+            {
+              title: 'Libraries',
+              content: this.props.house.getLibraries(),
+              iconName: 'book',
+            },
+            {
+              title: 'Cultural Spaces',
+              content: this.props.house.getCulturalSpaces(),
+              iconName: 'paint-brush',
+            },
+            {
+              title: 'Parks',
+              content: this.props.house.getParks(),
+              iconName: 'tree',
+            },
+            {
+              title: 'Community Centers',
+              content: this.props.house.getRecreationalCenters(),
+              iconName: 'futbol-o',
+            },
+            {
+              title: 'Charging Stations',
+              content: this.props.house.getChargingStations(),
+              iconName: 'bolt',
+            },
+            {
+              title: 'Bus Stops',
+              content: this.props.house.getBusStops(),
+              iconName: 'bus',
+            }
+          ]}
+          renderHeader={this._renderHeader}
+          renderContent={this._renderContent}
+        />
     </View>
     );
   }
@@ -140,8 +156,7 @@ const styles = StyleSheet.create({
   },
   image: {
     marginTop: 10,
-    marginLeft: 10,
-    width: 200,
+    width: SCREEN_WIDTH,
     height: 200,
   },
   attributeTitle: {
@@ -154,5 +169,27 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     marginLeft: 10,
+  },
+  accordianHeader: {
+    height: 30,
+    backgroundColor: 'white',
+    padding: 10,
+  },
+  accordianText: {
+    position: 'absolute',
+    top: 5,
+    left: 45,
+    fontSize: 20,
+    fontWeight: '500',
+    color: 'black',
+  },
+  accordianContent: {
+    padding: 20,
+    backgroundColor: 'white',
+  },
+  icon: {
+    position: 'absolute',
+    top: 5,
+    left: 5,
   }
 });
