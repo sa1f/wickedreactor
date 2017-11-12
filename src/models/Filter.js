@@ -38,11 +38,6 @@ export default class Filter {
   }
 
   async genHouses(): Promise<List<House>> {
-    return FilterMockAPI.genHouses();
-  }
-
-  // genHouses() code for when we are no longer using a mock API call
-  async getHouse_REAL(): Promise<List<House>> {
     const response = await fetch(new Request(
       'http://localhost:8888',
       {
