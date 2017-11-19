@@ -67,6 +67,7 @@ app.post('/', function (request, response) {
         }
     */
 
+    // Get props from the POST request
     var opts = {
         LongitudeMin: request.body.minimumLongitude,
         LongitudeMax: request.body.maximumLongitude,
@@ -111,6 +112,7 @@ app.post('/', function (request, response) {
                         lon: schools[j][2]
                     }
 
+                    // check if school is within the 'schoolRange' of the house
                     if (geodist(houseCoords, schoolCoords, {limit: schoolRange, unit: 'km'})) {
                         Property["schools"].push(schools[j]);
                     }
