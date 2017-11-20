@@ -27,15 +27,15 @@ var librariesParser = csvParse({delimiter: ','}, function(err, data) {
 });
 
 var chargerParser = csvParse({delimiter: ','}, function(err, data) {
-    chargers = data;
+    chargingStations = data;
 });
 
 var spacesParser = csvParse({delimiter: ','}, function(err, data) {
-    spaces = data;
+    culturalSpaces = data;
 });
 
 var centresParser = csvParse({delimiter: ','}, function(err, data) {
-    centres = data;
+    recreationalCenters = data;
 });
 
 // Pass the files to CSV parsers
@@ -51,7 +51,7 @@ app.post('/', function (request, response) {
 
     /* Example Request:
         {
-  	      "minimumLatitude": 49.214268638555204,
+          "minimumLatitude": 49.214268638555204,
           "maximumLatitude": 49.290125554868546,
           "minimumLongitude": -123.2236647605896,
           "maximumLongitude": -123.0343222618103,
@@ -80,12 +80,16 @@ app.post('/', function (request, response) {
     };
 
     var schoolRange = request.body.schoolRange;
+    var libraryRange = request.body.libraryRange;
+    var culturalSpaceRange = request.body.culturalSpaceRange;
+    var parkRange = request.body.parkRange;
+    var recreationalCenterRange = request.body.recreationalCenterRange;
+    var chargingStationRange = request.body.chargingStationRange;
 
     realtor.post(opts)
         .then((data) => {
             var results = data.Results;
             var properties = [];
-            
             for(var i = 0; i < results.length; i++) {
                 var result = results[i].Property;
                 var Property = {
@@ -113,13 +117,71 @@ app.post('/', function (request, response) {
                     }
 
                     // check if school is within the 'schoolRange' of the house
-                    if (geodist(houseCoords, schoolCoords, {limit: schoolRange, unit: 'km'})) {
+                    if (geodist(houseCoords, schoolCoords, {limit: 1, unit: 'km'})) {
                         Property["schools"].push(schools[j]);
                     }
                 }
+
+                for (var j = 1; j < libraries.length; j++) {
+                    var libraryCoords = {
+                        lat: libraries[j][1],
+                        lon: libraries[j][2]
+                    }
+
+                    if (geodist(houseCoords, libraryCoords, {limit: libraryRange, unit: 'km'})) {
+                        Property["libraries"].push(libraries[j]);
+                    }
+                }
+
+                for (var j = 1; j < culturalSpaces.length; j++) {
+                    var culturalSpaceCoords = {
+                        lat: culturalSpaces[j][11],
+                        lon: culturalSpaces[j][10]
+                    }
+
+                    if (geodist(houseCoords, culturalSpaceCoords, {limit: culturalSpaceRange, unit: 'km'})) {
+                        Property["culturalSpaces"].push(culturalSpaces[j]);
+                    }
+                }
+                for (var j = 1; j < parks.length; j++) {
+                	//The parks csv has latitude and longitude together in a single column
+                	var latLong = parks[j][7].split(',');
+                    var parkCoords = {
+                        lat: latLong[0],
+                        lon: latLong[1]
+                    }
+
+                    if (geodist(houseCoords, parkCoords, {limit: parkRange, unit: 'km'})) {
+                        Property["parks"].push(parks[j]);
+                    }
+                }
+
+                for (var j = 1; j < recreationalCenters.length; j++) {
+                    var recreationalCenterCoords = {
+                        lat: recreationalCenters[j][1],
+                        lon: recreationalCenters[j][2]
+                    }
+
+                    if (geodist(houseCoords, recreationalCenterCoords, {limit: recreationalCenterRange, unit: 'km'})) {
+                        Property["recreationalCenters"].push(recreationalCenters[j]);
+                    }
+                }
+
+                for (var j = 1; j < chargingStations.length; j++) {
+                    var chargingStationCoords = {
+                        lat: chargingStations[j][0],
+                        lon: chargingStations[j][1]
+                    }
+
+                    if (geodist(houseCoords, chargingStationCoords, {limit: chargingStationRange, unit: 'km'})) {
+                        Property["chargingStations"].push(chargingStations[j]);
+                    }
+                }
+
                 properties.push(Property);
             }
 
+			console.log("Sending response");
             response.send(properties);
         })
 
