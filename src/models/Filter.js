@@ -1,7 +1,6 @@
 // @flow
 'use strict';
 
-import FilterMockAPI from '../mocks/FilterMockAPI';
 import House from './House';
 import { List } from 'immutable';
 
@@ -44,9 +43,9 @@ export default class Filter {
         method: 'POST',
         body:  JSON.stringify(Filter.getFilter())
       }));
-    const responseJson = await response.json();
 
-    return House.createHouses(responseJson.houses);
+    const responseJson = await response.json();
+    return House.createHouses(responseJson);
   }
 
   setRegion(region: Region): this {

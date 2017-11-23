@@ -43,9 +43,11 @@ export default class House {
   }
 
   static createHouses(objects: List<Object> | Array<Object>): List<House> {
-    return List(objects.map((object) =>
-      new House(this._assertIsHouseData(object)),
-    ));
+    return objects ?
+      List(objects.map((object) =>
+        new House(this._assertIsHouseData(object)),
+      )) :
+      List();
   }
 
   getLatitude(): number {
@@ -94,6 +96,7 @@ export default class House {
     if (!keys.includes("latitude") ||
       !keys.includes("longitude") ||
       !keys.includes("price")) {
+      console.log(object);
       throw new TypeError();
     }
 

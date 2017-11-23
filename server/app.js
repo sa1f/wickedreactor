@@ -5,21 +5,19 @@ var realtor = require('realtorca');
 var fs = require('fs');
 var geodist = require('geodist');
 
-
-
 var app = express();
-app.use( bodyParser.json() ); 
+app.use( bodyParser.json() );
 
-// Storage variables 
+// Storage variables
 var schools, parks, chargers, spaces, centres;
 
 // Parse CSV and throw them into storage variables
 var schoolsParser = csvParse({delimiter: ','}, function(err, data) {
-    schools = data;    
+    schools = data;
 });
 
 var parksParser = csvParse({delimiter: ','}, function(err, data) {
-    parks = data;    
+    parks = data;
 });
 
 var librariesParser = csvParse({delimiter: ','}, function(err, data) {
@@ -92,12 +90,13 @@ app.post('/', function (request, response) {
             var properties = [];
             for(var i = 0; i < results.length; i++) {
                 var result = results[i].Property;
+                console.log(result);
                 var Property = {
                     "latitude" : result.Address.Latitude,
                     "longitude" : result.Address.Longitude,
                     "price" : result.Price,
                     "schools" : [],
-                    "libraries" : [], 
+                    "libraries" : [],
                     "culturalSpaces" : [],
                     "parks" : [],
                     "recreationalCenters" : [],
@@ -106,7 +105,7 @@ app.post('/', function (request, response) {
                 }
 
                 var houseCoords = {
-                    lat: Property.latitude, 
+                    lat: Property.latitude,
                     lon: Property.longitude
                 }
 
@@ -181,7 +180,7 @@ app.post('/', function (request, response) {
                 properties.push(Property);
             }
 
-			console.log("Sending response");
+            console.log("Sending response");
             response.send(properties);
         })
 
