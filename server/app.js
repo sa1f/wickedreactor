@@ -53,7 +53,7 @@ app.post('/', function (request, response) {
           "maximumLatitude": 49.290125554868546,
           "minimumLongitude": -123.2236647605896,
           "maximumLongitude": -123.0343222618103,
-          "minimumPrice": 100000 ,
+          "minimumPrice": 1000000 ,
           "maximumPrice": 4100000 ,
           "schoolRange": 3,
           "libraryRange": 4,
@@ -73,7 +73,7 @@ app.post('/', function (request, response) {
         LatitudeMax: request.body.maximumLatitude,
         PriceMin: request.body.minimumPrice,
         PriceMax: request.body.maximumPrice,
-        RecordsPerPage: 100,
+        RecordsPerPage: 5,
         CurrentPage: 1
     };
 
@@ -90,20 +90,20 @@ app.post('/', function (request, response) {
             var properties = [];
             for(var i = 0; i < results.length; i++) {
                 var result = results[i].Property;
-                console.log(result);
+                
                 var Property = {
                     "latitude" : result.Address.Latitude,
                     "longitude" : result.Address.Longitude,
                     "price" : result.Price,
+                    "photo" : result.Photo[0].LowResPath,
                     "schools" : [],
                     "libraries" : [],
                     "culturalSpaces" : [],
                     "parks" : [],
                     "recreationalCenters" : [],
                     "chargingStations" : [],
-                    "busStops" : [],
                 }
-
+            
                 var houseCoords = {
                     lat: Property.latitude,
                     lon: Property.longitude
