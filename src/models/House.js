@@ -19,6 +19,7 @@ export type HouseData = {
 export default class House {
   _latitude: number;
   _longitude: number;
+  _address: string;
   _price: number;
 
   _schools: List<string>;
@@ -28,10 +29,12 @@ export default class House {
   _recreationalCenters: List<string>;
   _chargingStations: List<string>;
   _busStops: List<string>;
+  _photo: string;
 
   constructor(house: HouseData) {
     this._latitude = house.latitude;
     this._longitude = house.longitude;
+    this._address = house.address;
     this._price = house.price;
     this._schools = house.schools || List();
     this._libraries = house.libraries || List();
@@ -40,6 +43,7 @@ export default class House {
     this._recreationalCenters = house.recreationalCenters || List();
     this._chargingStations = house.chargingStations || List();
     this._busStops = house.busStops || List();
+    this._photo = house.photo;
   }
 
   static createHouses(objects: List<Object> | Array<Object>): List<House> {
@@ -56,6 +60,10 @@ export default class House {
 
   getLongitude(): number {
     return this._longitude;
+  }
+
+  getAddress(): string {
+    return this._address;
   }
 
   getPrice(): number {
@@ -88,6 +96,10 @@ export default class House {
 
   getBusStops(): List<string> {
     return this._busStops;
+  }
+
+  getPhoto(): string {
+    return this._photo;
   }
 
   static _assertIsHouseData(object: Object): Object {

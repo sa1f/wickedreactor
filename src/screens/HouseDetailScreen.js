@@ -72,19 +72,19 @@ export default class HouseDetailScreen extends React.Component<Props, {}> {
         </View>
         <Image
           style={styles.image}
-          source={{uri: 'http://via.placeholder.com/200x200'}}
+          source={{uri: this.props.house.getPhoto() == '' ? 'http://via.placeholder.com/200x200': this.props.house.getPhoto()}}
         />
 
         <Accordion
           sections={[
             {
               title: 'Address',
-              content: 'Insert address here',
+              content: this.props.house.getAddress(),
               iconName: 'home',
             },
             {
               title: 'Price',
-              content: `$ ${this.props.house.getPrice()}`,
+              content: `Price: $${this.props.house.getPrice()}`,
               iconName: 'dollar',
             },
             {

@@ -119,12 +119,12 @@ const HouseCallout = (props) =>
   <MapView.Callout style={styles.calloutContainer}
     toolTip={true}
     onPress={() => {props.navigationProp('HouseDetailScreen', {house: props.curHouse})}}>
-    <Text style={styles.calloutAddress}>{'Address: '}</Text>
+    <Text style={styles.calloutAddress}>{'Address: ' + props.curHouse.getAddress()}</Text>
     <Text style={styles.calloutPrice}>{`Price: $${props.curHouse.getPrice()}`}</Text>
     <Text style={styles.calloutBedBath}>{'Bedrooms:    Bathrooms:  '}</Text>
     <Image
       style={styles.image}
-      source={{uri: 'http://via.placeholder.com/200x200'}}
+      source={{uri: props.curHouse.getPhoto() == '' ? 'http://via.placeholder.com/200x200': props.curHouse.getPhoto()}}
     />
   </MapView.Callout>;
 

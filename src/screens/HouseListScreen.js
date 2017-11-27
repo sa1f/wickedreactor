@@ -68,8 +68,8 @@ const CardView = (props) =>
       <CardImage>
         <Image
           style={styles.image}
-          source={{uri: 'http://via.placeholder.com/200x400'}}>
-          <Text style={styles.cardText}>{'Address: '}</Text>
+          source={{uri: props.curHouse.getPhoto() == '' ? 'http://via.placeholder.com/200x200': props.curHouse.getPhoto()}}>
+          <Text style={styles.cardText}>{'Address: ' + props.curHouse.getAddress()}</Text>
           <Text style={styles.cardText}>{`Price: $${props.curHouse.getPrice()}`}</Text>
           <Text style={styles.cardText}>{'Bedrooms:   Bathrooms: '}</Text>
           <CardAction >
@@ -134,6 +134,6 @@ const styles = StyleSheet.create({
   },
   cardButton: {
     marginTop: 80,
-    marginLeft: 150,
+    marginLeft: 130,
   }
 });
