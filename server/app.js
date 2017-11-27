@@ -91,11 +91,15 @@ app.post('/', function (request, response) {
             for(var i = 0; i < results.length; i++) {
                 var result = results[i].Property;
                 
+                var addressText = result.Address.AddressText.split("|");
+                addressText = addressText ? addressText[0] : "";
+
                 var Property = {
                     "latitude" : result.Address.Latitude,
                     "longitude" : result.Address.Longitude,
+                    "address" : addressText,
                     "price" : result.Price,
-                    "photo" : result.Photo[0].LowResPath,
+                    "photo" : result.Photo ? result.Photo[0].LowResPath : "",
                     "schools" : [],
                     "libraries" : [],
                     "culturalSpaces" : [],
@@ -103,7 +107,8 @@ app.post('/', function (request, response) {
                     "recreationalCenters" : [],
                     "chargingStations" : [],
                 }
-            
+
+                console.log(result);
                 var houseCoords = {
                     lat: Property.latitude,
                     lon: Property.longitude
