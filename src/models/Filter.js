@@ -37,6 +37,9 @@ export default class Filter {
   }
 
   async genHouses(): Promise<List<House>> {
+
+    console.log(JSON.stringify(Filter.getFilter()));
+
     const response = await fetch(new Request(
       'https://hospitable-vise.glitch.me/',
       {
@@ -182,6 +185,8 @@ export default class Filter {
       maximumLatitude: this._maximumLatitude,
       minimumLongitude: this._minimumLongitude,
       maximumLongitude: this._maximumLongitude,
+      minimumPrice: this._minimumPrice,
+      maximumPrice: this._maximumPricee,
       schoolRange: this._schoolRange,
       libraryRange: this._libraryRange,
       culturalSpaceRange: this._culturalSpaceRange,

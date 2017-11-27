@@ -127,6 +127,9 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   cardText: {
+    textShadowColor: 'black',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 1,
     color: 'white',
     marginLeft: 10,
     fontSize: 18,
