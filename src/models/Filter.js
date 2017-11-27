@@ -38,10 +38,14 @@ export default class Filter {
 
   async genHouses(): Promise<List<House>> {
     const response = await fetch(new Request(
-      'http://localhost:8888',
+      'https://hospitable-vise.glitch.me/',
       {
         method: 'POST',
-        body:  JSON.stringify(Filter.getFilter())
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body:  JSON.stringify(Filter.getFilter()),
       }));
 
     const responseJson = await response.json();

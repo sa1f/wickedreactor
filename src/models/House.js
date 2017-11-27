@@ -100,6 +100,14 @@ export default class House {
       throw new TypeError();
     }
 
+    object.latitude = parseFloat(object.latitude);
+    object.longitude = parseFloat(object.longitude);
+    object.price = this._formatPriceAsNumber(object.price);
+
     return object;
+  }
+
+  static _formatPriceAsNumber(price: string): number {
+    return parseInt(price.replace(/\D/g, ''), 10);
   }
 }
