@@ -9,7 +9,7 @@ var app = express();
 app.use( bodyParser.json() );
 
 // Storage variables
-var schools, parks, chargers, spaces, centres;
+var schools, libraries, parks, chargingStations, culturalSpaces, recreationalCenters;
 
 // Parse CSV and throw them into storage variables
 var schoolsParser = csvParse({delimiter: ','}, function(err, data) {
@@ -90,7 +90,7 @@ app.post('/', function (request, response) {
             var properties = [];
             for(var i = 0; i < results.length; i++) {
                 var result = results[i].Property;
-                
+
                 var addressText = result.Address.AddressText.split("|");
                 addressText = addressText ? addressText[0] : "";
 
