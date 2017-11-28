@@ -106,6 +106,12 @@ app.post('/', function (request, response) {
                     "parks" : [],
                     "recreationalCenters" : [],
                     "chargingStations" : [],
+                    "schoolDistances" : [],
+                    "libraryDistances" : [],
+                    "culturalSpaceDistances" : [],
+                    "parkDistances" : [],
+                    "recreationalCenterDistances" : [],
+                    "chargingStationDistances" : [],                    
                 }
 
                 console.log(result);
@@ -121,7 +127,10 @@ app.post('/', function (request, response) {
                     }
 
                     // check if school is within the 'schoolRange' of the house
-                    if (geodist(houseCoords, schoolCoords, {limit: schoolRange, unit: 'km'})) {
+                    var dist = geodist(houseCoords, schoolCoords, {unit: 'meters'});
+
+                    if (dist <= schoolRange*1000) {
+                        Property["schoolDistances"].push(dist/1000);
                         Property["schools"].push(schools[j]);
                     }
                 }
@@ -132,7 +141,9 @@ app.post('/', function (request, response) {
                         lon: libraries[j][2]
                     }
 
-                    if (geodist(houseCoords, libraryCoords, {limit: libraryRange, unit: 'km'})) {
+                    var dist = geodist(houseCoords, libraryCoords, {unit: 'meters'});
+                    if (dist <= libraryRange*1000) {
+                        Property["libraryDistances"].push(dist/1000);
                         Property["libraries"].push(libraries[j]);
                     }
                 }
@@ -143,19 +154,23 @@ app.post('/', function (request, response) {
                         lon: culturalSpaces[j][10]
                     }
 
-                    if (geodist(houseCoords, culturalSpaceCoords, {limit: culturalSpaceRange, unit: 'km'})) {
+                    var dist = geodist(houseCoords, culturalSpaceCoords, {unit: 'meters'});
+                    if (dist <= culturalSpaceRange*1000) {
+                        Property["culturalSpaceDistances"].push(dist/1000);
                         Property["culturalSpaces"].push(culturalSpaces[j]);
                     }
                 }
                 for (var j = 1; j < parks.length; j++) {
-                	//The parks csv has latitude and longitude together in a single column
-                	var latLong = parks[j][7].split(',');
+                    //The parks csv has latitude and longitude together in a single column
+                    var latLong = parks[j][7].split(',');
                     var parkCoords = {
                         lat: latLong[0],
                         lon: latLong[1]
                     }
 
-                    if (geodist(houseCoords, parkCoords, {limit: parkRange, unit: 'km'})) {
+                    var dist = geodist(houseCoords, parkCoords, {unit: 'meters'});
+                    if (dist <= parkRange*1000) {
+                        Property["parkDistances"].push(dist/1000);
                         Property["parks"].push(parks[j]);
                     }
                 }
@@ -166,7 +181,9 @@ app.post('/', function (request, response) {
                         lon: recreationalCenters[j][2]
                     }
 
-                    if (geodist(houseCoords, recreationalCenterCoords, {limit: recreationalCenterRange, unit: 'km'})) {
+                    var dist = geodist(houseCoords, recreationalCenterCoords, {unit: 'meters'});
+                    if (dist <= recreationalCenterRange*1000) {
+                        Property["recreationalCenterDistances"].push(dist/1000);
                         Property["recreationalCenters"].push(recreationalCenters[j]);
                     }
                 }
@@ -177,7 +194,9 @@ app.post('/', function (request, response) {
                         lon: chargingStations[j][1]
                     }
 
-                    if (geodist(houseCoords, chargingStationCoords, {limit: chargingStationRange, unit: 'km'})) {
+                    var dist = geodist(houseCoords, chargingStationCoords, {unit: 'meters'});
+                    if (dist <= chargingStationRange*1000) {
+                        Property["chargingStationDistances"].push(dist/1000);
                         Property["chargingStations"].push(chargingStations[j]);
                     }
                 }
