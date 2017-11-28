@@ -76,7 +76,7 @@ const CardView = (props) =>
               style={styles.cardButton}
               onPress={() =>
                 props.navigationProp('HouseDetailScreen', {house: props.curHouse})}>
-              View Details
+              <Text style={styles.buttonText}>{'View Details'}</Text>
             </Button>
           </CardAction>
         </Image>
@@ -137,5 +137,15 @@ const styles = StyleSheet.create({
   cardButton: {
     marginTop: 80,
     marginLeft: 130,
-  }
+  },
+  buttonText: {
+    textShadowColor: 'black',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 1,
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 80,
+    marginLeft: SCREEN_WIDTH/2 - 60,
+  },
 });

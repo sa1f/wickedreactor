@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 250,
-    height: 200,
+    height: 150,
   },
   filterIcon: {
     position: 'absolute',

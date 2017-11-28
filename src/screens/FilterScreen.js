@@ -259,26 +259,6 @@ export default class FilterScreen extends React.Component<Props, State> {
                  currentFilterField:'chargingStationRange',
                })}
              />
-             <SettingsList.Item
-               icon={
-                 <Icon
-                   name='bus'
-                   type='font-awesome'
-                   reverse={true}
-                 />
-               }
-               hasNavArrow={false}
-               itemWidth={70}
-               titleStyle={styles.filteritem}
-               title='Range to Bus Stops'
-               titleInfo={`${String(Filter.getFilter().getBusStopRange())} km`}
-               onPress={() => this.setState({
-                 promptVisible: true,
-                 message:'Set the Maximum Range to Bus Stops',
-                 placeholderMessage:'Enter Range',
-                 currentFilterField:'busStopRange',
-               })}
-             />
            </SettingsList>
            <Prompt
               textInputProps={{keyboardType: 'numeric'}}
