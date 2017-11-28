@@ -121,7 +121,7 @@ app.post('/', function (request, response) {
                     }
 
                     // check if school is within the 'schoolRange' of the house
-                    if (geodist(houseCoords, schoolCoords, {limit: 1, unit: 'km'})) {
+                    if (geodist(houseCoords, schoolCoords, {limit: schoolRange, unit: 'km'})) {
                         Property["schools"].push(schools[j]);
                     }
                 }
