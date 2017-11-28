@@ -14,19 +14,19 @@ export type Region = {
 export default class Filter {
   static _filter: Filter;
 
-  _minimumPrice: number = 0;
-  _maximumPrice: number = 100000000;
+  _minimumPrice: number = 1000000;
+  _maximumPrice: number = 5000000;
   _minimumLatitude: number = 49;
   _maximumLatitude: number = 50;
   _minimumLongitude: number = -124;
   _maximumLongitude: number = -123;
-  _schoolRange: number = 0;
-  _libraryRange: number = 0;
-  _culturalSpaceRange: number = 0;
-  _parkRange: number = 0;
-  _recreationalCenterRange: number = 0;
-  _chargingStationRange: number = 0;
-  _busStopRange: number = 0;
+  _schoolRange: number = 1;
+  _libraryRange: number = 1;
+  _culturalSpaceRange: number = 1;
+  _parkRange: number = 1;
+  _recreationalCenterRange: number = 1;
+  _chargingStationRange: number = 1;
+  _busStopRange: number = 1;
 
   static getFilter(): Filter {
     if (!this._filter) {
@@ -37,7 +37,6 @@ export default class Filter {
   }
 
   async genHouses(): Promise<List<House>> {
-
     console.log(JSON.stringify(Filter.getFilter()));
 
     const response = await fetch(new Request(
@@ -186,7 +185,7 @@ export default class Filter {
       minimumLongitude: this._minimumLongitude,
       maximumLongitude: this._maximumLongitude,
       minimumPrice: this._minimumPrice,
-      maximumPrice: this._maximumPricee,
+      maximumPrice: this._maximumPrice,
       schoolRange: this._schoolRange,
       libraryRange: this._libraryRange,
       culturalSpaceRange: this._culturalSpaceRange,

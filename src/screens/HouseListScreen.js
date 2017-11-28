@@ -71,7 +71,6 @@ const CardView = (props) =>
           source={{uri: props.curHouse.getPhoto() == '' ? 'http://via.placeholder.com/200x200': props.curHouse.getPhoto()}}>
           <Text style={styles.cardText}>{'Address: ' + props.curHouse.getAddress()}</Text>
           <Text style={styles.cardText}>{`Price: $${props.curHouse.getPrice()}`}</Text>
-          <Text style={styles.cardText}>{'Bedrooms:   Bathrooms: '}</Text>
           <CardAction >
             <Button
               style={styles.cardButton}

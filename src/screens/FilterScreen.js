@@ -299,16 +299,18 @@ const Header = (props) =>
       name='arrow-left'
       type='font-awesome'
       color='white'
-      onPress={() => props.navigation(
-        'Map',
-        { houses: Filter.getFilter().genHouses()},
-      )}
+      onPress={() => props.navigation('Map', {})}
     />
     <Text style={styles.headertext}>
       Filters
     </Text>
   </View>;
-
+/*
+function navigateToMap() {
+  Filter.getFilter().genHouses()
+  return List();
+}
+*/
 const styles = StyleSheet.create({
   container: {
     flex:1,

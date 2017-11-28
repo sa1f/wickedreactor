@@ -119,13 +119,12 @@ const HouseCallout = (props) =>
   <MapView.Callout style={styles.calloutContainer}
     toolTip={true}
     onPress={() => {props.navigationProp('HouseDetailScreen', {house: props.curHouse})}}>
-    <Text style={styles.calloutAddress}>{'Address: ' + props.curHouse.getAddress()}</Text>
-    <Text style={styles.calloutPrice}>{`Price: $${props.curHouse.getPrice()}`}</Text>
-    <Text style={styles.calloutBedBath}>{'Bedrooms:    Bathrooms:  '}</Text>
     <Image
       style={styles.image}
-      source={{uri: props.curHouse.getPhoto() == '' ? 'http://via.placeholder.com/200x200': props.curHouse.getPhoto()}}
-    />
+      source={{uri: props.curHouse.getPhoto() == '' ? 'http://via.placeholder.com/200x200': props.curHouse.getPhoto()}}>
+      <Text style={styles.calloutAddress}>{'Address: \n' + props.curHouse.getAddress()}</Text>
+      <Text style={styles.calloutPrice}>{`Price: \n$${props.curHouse.getPrice()}`}</Text>
+    </Image>
   </MapView.Callout>;
 
 const styles = StyleSheet.create({
@@ -140,28 +139,32 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   calloutContainer: {
-    width: 200,
+    width: 250,
     borderRadius: 10,
   },
   calloutAddress: {
     fontWeight: 'bold',
     fontSize: 15,
-    marginTop: 5,
+    textShadowColor: 'black',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 1,
+    color: 'white',
+    marginTop: 10,
+    marginLeft: 5,
   },
   calloutPrice: {
     fontWeight: 'bold',
     fontSize: 15,
+    textShadowColor: 'black',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 1,
+    color: 'white',
     marginTop: 5,
-  },
-  calloutBedBath: {
-    fontWeight: 'bold',
-    fontSize: 15,
-    marginTop: 5,
+    marginLeft: 5,
   },
   image: {
-    height: 100,
-    marginTop: 10,
-    marginBottom: 5,
+    width: 250,
+    height: 200,
   },
   filterIcon: {
     position: 'absolute',

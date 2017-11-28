@@ -70,66 +70,80 @@ export default class HouseDetailScreen extends React.Component<Props, {}> {
             House Details
           </Text>
         </View>
-        <Image
-          style={styles.image}
-          source={{uri: this.props.house.getPhoto() == '' ? 'http://via.placeholder.com/200x200': this.props.house.getPhoto()}}
-        />
-
-        <Accordion
-          sections={[
-            {
-              title: 'Address',
-              content: this.props.house.getAddress(),
-              iconName: 'home',
-            },
-            {
-              title: 'Price',
-              content: `Price: $${this.props.house.getPrice()}`,
-              iconName: 'dollar',
-            },
-            {
-              title: 'Schools',
-              content: this.props.house.getSchools(),
-              iconName: 'pencil',
-            },
-            {
-              title: 'Libraries',
-              content: this.props.house.getLibraries(),
-              iconName: 'book',
-            },
-            {
-              title: 'Cultural Spaces',
-              content: this.props.house.getCulturalSpaces(),
-              iconName: 'paint-brush',
-            },
-            {
-              title: 'Parks',
-              content: this.props.house.getParks(),
-              iconName: 'tree',
-            },
-            {
-              title: 'Community Centers',
-              content: this.props.house.getRecreationalCenters(),
-              iconName: 'futbol-o',
-            },
-            {
-              title: 'Charging Stations',
-              content: this.props.house.getChargingStations(),
-              iconName: 'bolt',
-            },
-            {
-              title: 'Bus Stops',
-              content: this.props.house.getBusStops(),
-              iconName: 'bus',
-            }
-          ]}
-          renderHeader={this._renderHeader}
-          renderContent={this._renderContent}
-        />
+        <ScrollView>
+          <Image
+            style={styles.image}
+            source={{uri: this.props.house.getPhoto() == '' ? 'http://via.placeholder.com/200x200': this.props.house.getPhoto()}}
+          />
+          <Accordion
+            sections={[
+              {
+                title: 'Address',
+                content: this.props.house.getAddress(),
+                iconName: 'home',
+              },
+              {
+                title: 'Price',
+                content: `$${this.props.house.getPrice()}`,
+                iconName: 'dollar',
+              },
+              {
+                title: 'Schools',
+                content: printList(this.props.house.getSchools()),
+                iconName: 'pencil',
+              },
+              {
+                title: 'Libraries',
+                content: printList(this.props.house.getLibraries()),
+                iconName: 'book',
+              },
+              {
+                title: 'Cultural Spaces',
+                content: printList(this.props.house.getCulturalSpaces()),
+                iconName: 'paint-brush',
+              },
+              {
+                title: 'Parks',
+                content: printList(this.props.house.getParks(), 'park'),
+                iconName: 'tree',
+              },
+              {
+                title: 'Community Centers',
+                content: printList(this.props.house.getRecreationalCenters()),
+                iconName: 'futbol-o',
+              },
+              {
+                title: 'Charging Stations',
+                content: printList(this.props.house.getChargingStations(), 'charging'),
+                iconName: 'bolt',
+              },
+            ]}
+            renderHeader={this._renderHeader}
+            renderContent={this._renderContent}
+          />
+      </ScrollView>
     </View>
     );
   }
 }
+
+function printList(list, alternate) {
+    var retString = '';
+
+    for(var curIndex in list) {
+      switch(alternate) {
+        case 'park': retString += (list[curIndex][1] + '\n');
+          break;
+        case 'charging': retString += (list[curIndex][3] + '\n');
+          break;
+        default: retString += (list[curIndex][0] + '\n');
+      }
+    }
+
+    return retString;
+}
+
+// this.props.house.getSchools()
 
 const styles = StyleSheet.create({
   container: {
@@ -155,7 +169,6 @@ const styles = StyleSheet.create({
     fontSize:20,
   },
   image: {
-    marginTop: 10,
     width: SCREEN_WIDTH,
     height: 200,
   },
@@ -171,7 +184,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   accordianHeader: {
-    height: 30,
+    height: 40,
     backgroundColor: 'white',
     padding: 10,
   },
