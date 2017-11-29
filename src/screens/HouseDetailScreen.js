@@ -89,32 +89,32 @@ export default class HouseDetailScreen extends React.Component<Props, {}> {
               },
               {
                 title: 'Schools',
-                content: printList(this.props.house.getSchools()),
+                content: printList(this.props.house.getSchools(), this.props.house.getSchoolDistances()),
                 iconName: 'pencil',
               },
               {
                 title: 'Libraries',
-                content: printList(this.props.house.getLibraries()),
+                content: printList(this.props.house.getLibraries(), this.props.house.getLibraryDistances()),
                 iconName: 'book',
               },
               {
                 title: 'Cultural Spaces',
-                content: printList(this.props.house.getCulturalSpaces()),
+                content: printList(this.props.house.getCulturalSpaces(), this.props.house.getCulturalSpaceDistances()),
                 iconName: 'paint-brush',
               },
               {
                 title: 'Parks',
-                content: printList(this.props.house.getParks(), 'park'),
+                content: printList(this.props.house.getParks(), this.props.house.getParkDistances(), 'park'),
                 iconName: 'tree',
               },
               {
                 title: 'Community Centers',
-                content: printList(this.props.house.getRecreationalCenters()),
+                content: printList(this.props.house.getRecreationalCenters(), this.props.house.getRecreationalCenterDistances()),
                 iconName: 'futbol-o',
               },
               {
                 title: 'Charging Stations',
-                content: printList(this.props.house.getChargingStations(), 'charging'),
+                content: printList(this.props.house.getChargingStations(), this.props.house.getChargingStationDistances(), 'charging'),
                 iconName: 'bolt',
               },
             ]}
@@ -127,16 +127,16 @@ export default class HouseDetailScreen extends React.Component<Props, {}> {
   }
 }
 
-function printList(list, alternate) {
+function printList(nameList, distList, alternate) {
     var retString = '';
 
-    for(var curIndex in list) {
+    for(var curIndex in nameList) {
       switch(alternate) {
-        case 'park': retString += (list[curIndex][1] + '\n');
+        case 'park': retString += (nameList[curIndex][1] + '   ' + distList[curIndex] + 'km\n\n');
           break;
-        case 'charging': retString += (list[curIndex][3] + '\n');
+        case 'charging': retString += (nameList[curIndex][3] + '   ' + distList[curIndex] + 'km\n\n');
           break;
-        default: retString += (list[curIndex][0] + '\n');
+        default: retString += (nameList[curIndex][0] + '   ' + distList[curIndex] + 'km\n\n');
       }
     }
 

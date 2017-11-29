@@ -31,6 +31,13 @@ export default class House {
   _busStops: List<string>;
   _photo: string;
 
+  _schoolDistances: List<string>;
+  _libraryDistances: List<string>;
+  _culturalSpaceDistances: List<string>;
+  _parkDistances: List<string>;
+  _recreationalCenterDistances: List<string>;
+  _chargingStationDistances: List<string>;
+
   constructor(house: HouseData) {
     this._latitude = house.latitude;
     this._longitude = house.longitude;
@@ -44,6 +51,12 @@ export default class House {
     this._chargingStations = house.chargingStations || List();
     this._busStops = house.busStops || List();
     this._photo = house.photo;
+    this._schoolDistances = house.schoolDistances || List();
+    this._libraryDistances = house.libraryDistances || List();
+    this._culturalSpaceDistances = house.culturalSpaceDistances || List();
+    this._parkDistances =  house.parkDistances || List();
+    this._recreationalCenterDistances = house.recreationalCenterDistances || List();
+    this._chargingStationDistances =  house.chargingStationDistances || List();
   }
 
   static createHouses(objects: List<Object> | Array<Object>): List<House> {
@@ -94,12 +107,32 @@ export default class House {
     return this._chargingStations;
   }
 
-  getBusStops(): List<string> {
-    return this._busStops;
-  }
-
   getPhoto(): string {
     return this._photo;
+  }
+
+  getSchoolDistances(): List<String> {
+    return this._schoolDistances;
+  }
+
+  getLibraryDistances(): List<String> {
+    return this._libraryDistances;
+  }
+
+  getCulturalSpaceDistances(): List<String> {
+    return this._culturalSpaceDistances;
+  }
+
+  getParkDistances(): List<String> {
+    return this._parkDistances;
+  }
+
+  getRecreationalCenterDistances(): List<String> {
+    return this._recreationalCenterDistances;
+  }
+
+  getChargingStationDistances(): List<String> {
+    return this._chargingStationDistances;
   }
 
   static _assertIsHouseData(object: Object): Object {
