@@ -61,7 +61,9 @@ app.post('/', function (request, response) {
           "parkRange": 6,
           "recreationalCenterRange": 7,
           "chargingStationRange": 8,
-          "busStopRange": 9
+          "busStopRange": 9,
+          "bathMin" : 2,
+          "bedMin" : 3
         }
     */
 
@@ -73,6 +75,8 @@ app.post('/', function (request, response) {
         LatitudeMax: request.body.maximumLatitude,
         PriceMin: request.body.minimumPrice,
         PriceMax: request.body.maximumPrice,
+        BedRange: request.body.bedMin + "-20",
+        BathRange: request.body.bathMin + "-20",
         RecordsPerPage: 5,
         CurrentPage: 1
     };
