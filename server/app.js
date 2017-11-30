@@ -276,8 +276,8 @@ app.post('/filter', function (request, response) {
         LatitudeMax: request.body.maximumLatitude,
         PriceMin: request.body.minimumPrice,
         PriceMax: request.body.maximumPrice,
-        //BedRange: request.body.bedMin + "-20",
-        //BathRange: request.body.bathMin + "-20",
+        BedRange: request.body.bed + "-" + request.body.bed,
+        BathRange: request.body.bath + "-" + request.body.bath,
         RecordsPerPage: 5,
         CurrentPage: 1
     };

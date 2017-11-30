@@ -26,6 +26,8 @@ const FilterField = {
   recreationalCenterRange: 'recreationalCenterRange',
   chargingStationRange: 'chargingStationRange',
   busStopRange: 'busStopRange',
+  bed: 'bed',
+  bath: 'bath',
 };
 
 type FilterFieldType = $Keys<typeof FilterField>;
@@ -81,6 +83,12 @@ export default class FilterScreen extends React.Component<Props, State> {
         break;
       case FilterField.busStopRange:
         Filter.getFilter().setBusStopRange(parseInt(value, 10));
+        break;
+      case FilterField.bed:
+        Filter.getFilter().setBeds(parseInt(value, 10));
+        break;
+      case FilterField.bath:
+        Filter.getFilter().setBaths(parseInt(value, 10));
         break;
     }
   }
@@ -259,14 +267,58 @@ export default class FilterScreen extends React.Component<Props, State> {
                  currentFilterField:'chargingStationRange',
                })}
              />
-           </SettingsList>
-           <Prompt
-              textInputProps={{keyboardType: 'numeric'}}
-              title={this.state.message}
-              placeholder={this.state.placeholderMessage}
-              visible={this.state.promptVisible}
-              onCancel={() => this.setState({ promptVisible: false })}
-              onSubmit={(value) => this._updateFilter(value)}/>
+           <SettingsList.Item
+             icon={
+               <Icon
+                 name='bed'
+                 type='font-awesome'
+                 reverse={true}
+               />
+             }
+             hasNavArrow={false}
+             itemWidth={70}
+             titleStyle={styles.filteritem}
+             title='Number of Bedrooms'
+             titleInfo={
+               `${String(Filter.getFilter().getBeds())}`
+             }
+             onPress={() => this.setState({
+               promptVisible: true,
+               message:'Set the Number of Bedrooms',
+               placeholderMessage:'Enter Number',
+               currentFilterField:'bed',
+             })}
+           />
+           <SettingsList.Item
+             icon={
+               <Icon
+                 name='bath'
+                 type='font-awesome'
+                 reverse={true}
+               />
+             }
+             hasNavArrow={false}
+             itemWidth={70}
+             titleStyle={styles.filteritem}
+             title='Number of Bathrooms'
+             titleInfo={
+               `${String(Filter.getFilter().getBaths())}`
+             }
+             onPress={() => this.setState({
+               promptVisible: true,
+               message:'Set the Number of Bathrooms',
+               placeholderMessage:'Enter Number',
+               currentFilterField:'bath',
+             })}
+           />
+         </SettingsList>
+         <Prompt
+            textInputProps={{keyboardType: 'numeric'}}
+            title={this.state.message}
+            placeholder={this.state.placeholderMessage}
+            visible={this.state.promptVisible}
+            onCancel={() => this.setState({ promptVisible: false })}
+            onSubmit={(value) => this._updateFilter(value)}/>
         </View>
       </View>
     );

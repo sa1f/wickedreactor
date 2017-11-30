@@ -27,6 +27,8 @@ export default class Filter {
   _recreationalCenterRange: number = 1;
   _chargingStationRange: number = 1;
   _busStopRange: number = 1;
+  _beds: number = 1;
+  _baths: number = 1;
 
   static getFilter(): Filter {
     if (!this._filter) {
@@ -81,6 +83,24 @@ export default class Filter {
 
   getMinimumLatitude(): number {
     return this._minimumLatitude;
+  }
+
+  getBeds(): number {
+    return this._beds;
+  }
+
+  setBeds(beds: number): this {
+    this._beds = beds;
+    return this;
+  }
+
+  getBaths(): number {
+    return this._baths;
+  }
+
+  setBaths(baths: number): this {
+    this._baths = baths;
+    return this;
   }
 
   setMinimumLatitude(latitude: number): this {
@@ -193,6 +213,8 @@ export default class Filter {
       recreationalCenterRange: this._recreationalCenterRange,
       chargingStationRange: this._chargingStationRange,
       busStopRange: this._busStopRange,
+      bed: this._beds,
+      bath: this._baths,
     };
   }
 }
