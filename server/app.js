@@ -306,7 +306,7 @@ app.post('/filter', function (request, response) {
                     "address" : addressText,
                     "price" : result.Price,
                     "photo" : result.Photo ? result.Photo[0].LowResPath : "",
-                    "mlsid" : result.MlsNumber,
+                    "mlsid" : results[i].MlsNumber,
                     "schools" : [],
                     "libraries" : [],
                     "culturalSpaces" : [],
