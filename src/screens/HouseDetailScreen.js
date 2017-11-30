@@ -184,7 +184,7 @@ async function addToFavourites(curHouse, navigate) {
 const styles = StyleSheet.create({
   container: {
     flex:1,
-    backgroundColor:'#f6f6f6',
+    backgroundColor:'white',
   },
   header: {
     borderBottomWidth:1,
