@@ -8,6 +8,121 @@ var geodist = require('geodist');
 var app = express();
 app.use( bodyParser.json() );
 
+
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const defaultUsername = 'test';
+const defaultPassword = 'test';
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize('database', 'testuser', 'testpassword', {
+  dialect: 'sqlite',
+  storage: 'database.sqlite',
+  logging: false,
+  operatorsAliases: false
+});
+
+const User = sequelize.define('user', {
+  username: Sequelize.STRING,
+  password: Sequelize.STRING
+});
+
+const Session = sequelize.define('session', {
+  username: Sequelize.STRING,
+  token: Sequelize.STRING,
+  valid: Sequelize.BOOLEAN
+});
+
+const FavHouse = sequelize.define('favhouse', {
+  username: Sequelize.STRING,
+  mlsid: Sequelize.STRING,
+  houseJson: Sequelize.STRING
+});
+
+sequelize.sync().then(() => User.findOrCreate({
+    where: {
+        username: defaultUsername
+    },
+    defaults: {
+        password: generatePassword(defaultPassword)
+    }
+}));
+
+var randString = function() {
+    return Math.random().toString(36).substr(2);
+};
+
+function generatePassword(password) {
+    return bcrypt.hashSync(password, saltRounds);
+}
+
+
+var getOrGenerateToken = function(username) {
+    return Session.findOne({where: {username: username, valid: true}}).then(session => {
+        if (!session) {
+            return Session.create({
+                username: username,
+                token: randString(),
+                valid: true
+            }).then(session => {
+                return session.token;
+            })
+        }
+        else {
+            return session.token;
+        }
+    });
+}
+
+var loginUser = function(username, password) {
+    if (!username || !password)
+        return Promise.resolve(false);
+    return User.findOne({where: {username: username}}).then(user => {
+        if (!user) {
+            return false;
+        }
+        else {
+            return bcrypt.compareSync(password, user.dataValues.password);
+        }
+    });
+}
+
+var registerUser = function(username, password) {
+    if (!username || !password)
+        return Promise.resolve(false);
+    return User.findOne({where: {username: username}}).then(user => {
+        if (!user) {
+            return User.create({
+                username: username,
+                password: generatePassword(password)
+            })
+        }
+        else {
+            return false;
+        }
+    });
+}
+
+var authenticate = function(token) {
+    if (!token) 
+        return Promise.resolve(false);
+    return Session.findOne({where: {token: token, valid: true}}).then(session =>{
+        if (session)
+            return session;
+        else 
+            return false;
+    });
+}
+
+var storeHouse = function(mlsid, houseJson, username) {
+    return FavHouse.findOrCreate({ where: {
+        username: username,
+        mlsid: mlsid,
+        houseJson: houseJson},
+        defaults: {
+        } 
+    })
+}
+
 // Storage variables
 var schools, libraries, parks, chargingStations, culturalSpaces, recreationalCenters;
 
@@ -44,8 +159,94 @@ fs.createReadStream(__dirname + "/db/electric_vehicle_charging_stations.csv").pi
 fs.createReadStream(__dirname + "/db/cultural_spaces.csv").pipe(spacesParser);
 fs.createReadStream(__dirname + "/db/community_centres.csv").pipe(centresParser);
 
+app.post('/login', function(req, res) {
+    console.log("Login received from " + req.body.username);
+    loginUser(req.body.username, req.body.password).then(authenticated => {
+        if (authenticated) {
+            getOrGenerateToken(req.body.username).then(token => { 
+                res.send(token);
+            });
+        }
+        else {
+            res.status(404).send('Username/Password incorrect');
+        }
+    })
+});
 
-app.post('/', function (request, response) {
+app.post('/register', function(req, res) {
+    console.log("Register request received from " + req.body.username);
+    registerUser(req.body.username, req.body.password).then(authenticated => {
+        if (authenticated != null) {
+            getOrGenerateToken(req.body.username).then(token => { 
+                res.send(token);
+            });
+        }
+        else {
+            res.status(401).send('Couldn\'t register that account');
+        }
+    })
+});
+
+app.post('/storeFavourite', function(req, res) {
+    console.log("Store fav request received from " + req.body.token);
+    authenticate(req.body.token).then(session => {
+        if (session) {
+            storeHouse(req.body.mlsid, JSON.stringify(req.body.houseJson), session.username).then(stored => {
+                res.send("stored");
+            });
+        }
+        else {
+            res.status(401).send("not authenticated");
+        }
+    })
+});
+
+app.post('/getFavourites', function(req, res) {
+    console.log("Get favs request received from " + req.body.token);
+    authenticate(req.body.token).then(session => {
+        if (session) {
+            FavHouse.findAll({where: {username: session.username}}).then(result => {
+                var response = [];
+                for (var i = 0; i < result.length; i++) {
+                    var respObj = {
+                        mlsid: result[i].mlsid,
+                        houseJson: JSON.parse(result[i].houseJson)
+                    }
+                    response.push(respObj);
+                }
+                res.send(response);
+            });
+        }
+        else {
+            res.status(401).send("not authenticated");
+        }
+    })
+});
+
+
+app.delete('/deleteFavourite', function(req, res) {
+    console.log("Delete fav request received from " + req.body.token + " for mlsid " + req.body.mlsid);
+    authenticate(req.body.token).then(session => {
+        if (session) {
+            FavHouse.findAll({where: {username: session.username, mlsid: req.body.mlsid}}).then(result => {
+                console.log(result);
+                if (!result.length) {
+                    res.status(400).send("Nothing to delete");
+                    return;
+                }
+                for (var i = 0; i < result.length; i++) {
+                    result[i].destroy();
+                }
+                res.send("done");
+            });
+        }
+        else {
+            res.status(401).send("not authenticated");
+        }
+    })
+});
+
+app.post('/filter', function (request, response) {
 
     /* Example Request:
         {
@@ -92,6 +293,7 @@ app.post('/', function (request, response) {
         .then((data) => {
             var results = data.Results;
             var properties = [];
+            console.log("Retrieved " + results.length + " results");
             for(var i = 0; i < results.length; i++) {
                 var result = results[i].Property;
 
@@ -104,6 +306,7 @@ app.post('/', function (request, response) {
                     "address" : addressText,
                     "price" : result.Price,
                     "photo" : result.Photo ? result.Photo[0].LowResPath : "",
+                    "mlsid" : result.MlsNumber,
                     "schools" : [],
                     "libraries" : [],
                     "culturalSpaces" : [],
@@ -118,7 +321,6 @@ app.post('/', function (request, response) {
                     "chargingStationDistances" : [],                    
                 }
 
-                console.log(result);
                 var houseCoords = {
                     lat: Property.latitude,
                     lon: Property.longitude
