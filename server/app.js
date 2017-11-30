@@ -103,12 +103,12 @@ var registerUser = function(username, password) {
 }
 
 var authenticate = function(token) {
-    if (!token) 
+    if (!token)
         return Promise.resolve(false);
     return Session.findOne({where: {token: token, valid: true}}).then(session =>{
         if (session)
             return session;
-        else 
+        else
             return false;
     });
 }
@@ -119,7 +119,7 @@ var storeHouse = function(mlsid, houseJson, username) {
         mlsid: mlsid,
         houseJson: houseJson},
         defaults: {
-        } 
+        }
     })
 }
 
@@ -163,7 +163,7 @@ app.post('/login', function(req, res) {
     console.log("Login received from " + req.body.username);
     loginUser(req.body.username, req.body.password).then(authenticated => {
         if (authenticated) {
-            getOrGenerateToken(req.body.username).then(token => { 
+            getOrGenerateToken(req.body.username).then(token => {
                 res.send(token);
             });
         }
@@ -177,7 +177,7 @@ app.post('/register', function(req, res) {
     console.log("Register request received from " + req.body.username);
     registerUser(req.body.username, req.body.password).then(authenticated => {
         if (authenticated != null) {
-            getOrGenerateToken(req.body.username).then(token => { 
+            getOrGenerateToken(req.body.username).then(token => {
                 res.send(token);
             });
         }
@@ -276,8 +276,8 @@ app.post('/filter', function (request, response) {
         LatitudeMax: request.body.maximumLatitude,
         PriceMin: request.body.minimumPrice,
         PriceMax: request.body.maximumPrice,
-        BedRange: request.body.bedMin + "-20",
-        BathRange: request.body.bathMin + "-20",
+        //BedRange: request.body.bedMin + "-20",
+        //BathRange: request.body.bathMin + "-20",
         RecordsPerPage: 5,
         CurrentPage: 1
     };
@@ -305,7 +305,7 @@ app.post('/filter', function (request, response) {
                     "longitude" : result.Address.Longitude,
                     "address" : addressText,
                     "price" : result.Price,
-                    "photo" : result.Photo ? result.Photo[0].LowResPath : "",
+                    "photo" : result.Photo ? result.Photo[0].HighResPath : "",
                     "mlsid" : results[i].MlsNumber,
                     "schools" : [],
                     "libraries" : [],
@@ -318,7 +318,7 @@ app.post('/filter', function (request, response) {
                     "culturalSpaceDistances" : [],
                     "parkDistances" : [],
                     "recreationalCenterDistances" : [],
-                    "chargingStationDistances" : [],                    
+                    "chargingStationDistances" : [],
                 }
 
                 var houseCoords = {

@@ -160,17 +160,21 @@ async function addToFavourites(curHouse, navigate) {
   }
 
   const addToFavouritesResp = await fetch(new Request(
-    'https://childlike-quartz.glitch.me/storeFavourite',
+    'https://hospitable-vise.glitch.me/storeFavourite',
     {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({"token": global.userToken, "mlsid": "100", "houseJson": JSON.stringify(curHouse)}),
+      body: JSON.stringify({"token": global.userToken, "mlsid": curHouse.getMlsid(), "houseJson": JSON.stringify(curHouse)}),
     }));
 
     const addToFavouritesRespJson = await addToFavouritesResp._bodyInit;
+    if(!addToFavouritesRespJson.includes("stored")) {
+      ToastAndroid.show('Failed to favourite :(', ToastAndroid.SHORT);
+      return;
+    }
     await ToastAndroid.show('Saved to Favourites!', ToastAndroid.SHORT);
     await console.log(addToFavouritesRespJson);
 }

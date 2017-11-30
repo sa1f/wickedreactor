@@ -19,6 +19,7 @@ export default class House {
   _longitude: number;
   _address: string;
   _price: number;
+  _mlsid: string;
 
   _schools: List<string>;
   _libraries: List<string>;
@@ -41,6 +42,7 @@ export default class House {
     this._longitude = house.longitude;
     this._address = house.address;
     this._price = house.price;
+    this._mlsid = house.mlsid;
     this._schools = house.schools || List();
     this._libraries = house.libraries || List();
     this._culturalSpaces = house.culturalSpaces || List();
@@ -79,6 +81,10 @@ export default class House {
 
   getPrice(): number {
     return this._price;
+  }
+
+  getMlsid(): string {
+    return this._mlsid;
   }
 
   getSchools(): List<string> {
@@ -139,6 +145,7 @@ export default class House {
       longitude: this._longitude,
       address: this._address,
       price: this._price,
+      mlsid: this._mlsid,
 
       schools: this._schools,
       libraries: this._libraries,

@@ -101,6 +101,14 @@ export default class MapScreen extends React.Component<Props, State> {
             onPress={() => navigateToFavourites(navigate)}
           />
         </View>
+        <View style={styles.houseIcon}>
+          <Icon
+            name='sign-out'
+            type='font-awesome'
+            reverse={true}
+            onPress={() => logOut()}
+          />
+        </View>
       </View>
     );
   }
@@ -137,13 +145,22 @@ const HouseCallout = (props) =>
     </Image>
   </MapView.Callout>;
 
+function logOut() {
+  if(global.userToken == null) {
+    ToastAndroid.show('Not signed in!', ToastAndroid.SHORT);
+  } else {
+    global.userToken = null;
+    ToastAndroid.show('Signed out', ToastAndroid.SHORT);
+  }
+}
+
 async function navigateToFavourites(navigate) {
   if(global.userToken == null) {
     ToastAndroid.show('Please login first', ToastAndroid.SHORT);
     navigate('LoginScreen', {})
   } else {
     const getFavResponse = await fetch(new Request(
-      'https://childlike-quartz.glitch.me/getFavourites',
+      'https://hospitable-vise.glitch.me/getFavourites',
       {
         method: 'POST',
         headers: {

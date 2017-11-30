@@ -84,7 +84,7 @@ async function sendLoginRequest(state, navigate) {
   ToastAndroid.show('Logging In', ToastAndroid.SHORT);
 
   const loginResponse = await fetch(new Request(
-    'https://childlike-quartz.glitch.me/login',
+    'https://hospitable-vise.glitch.me/login',
     {
       method: 'POST',
       headers: {
@@ -103,7 +103,7 @@ async function sendLoginRequest(state, navigate) {
     global.userToken = loginResponseJson;
 
     const getFavResponse = await fetch(new Request(
-      'https://childlike-quartz.glitch.me/getFavourites',
+      'https://hospitable-vise.glitch.me/getFavourites',
       {
         method: 'POST',
         headers: {

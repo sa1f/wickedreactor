@@ -93,7 +93,7 @@ async function sendSignUpRequest(state) {
   ToastAndroid.show('Signing up', ToastAndroid.SHORT);
 
   const response = await fetch(new Request(
-    'https://childlike-quartz.glitch.me/register',
+    'https://hospitable-vise.glitch.me/register',
     {
       method: 'POST',
       headers: {

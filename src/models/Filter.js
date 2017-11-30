@@ -40,7 +40,7 @@ export default class Filter {
     console.log(JSON.stringify(Filter.getFilter()));
 
     const response = await fetch(new Request(
-      'https://hospitable-vise.glitch.me/',
+      'https://hospitable-vise.glitch.me/filter',
       {
         method: 'POST',
         headers: {

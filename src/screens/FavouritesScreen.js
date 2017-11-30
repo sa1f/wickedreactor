@@ -18,6 +18,8 @@ import Button from 'react-native-button';
 import { CardImage } from 'react-native-card-view';
 import { CardTitle } from 'react-native-card-view';
 import { CardContent } from 'react-native-card-view';
+import { ToastAndroid } from 'react-native';
+
 
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width;
@@ -27,9 +29,16 @@ type Props = {
   houses: List<House>,
 };
 
-export default class FavouritesScreen extends React.Component<Props, {}> {
+type State = {
+  random: boolean,
+}
+
+export default class FavouritesScreen extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
+    this.state = {
+      random: false,
+    };
   }
 
   render () {
@@ -50,13 +59,15 @@ export default class FavouritesScreen extends React.Component<Props, {}> {
         </View>
         <ScrollView>
           {this.props.houses.map((house, index) => (
-            <CardView
-              curHouse={house}
-              curHouseNumber={index}
-              key={index}
-              navigationProp={navigate}>
-            </CardView>
-          ))}
+              <CardView
+                curHouse={house}
+                curHouseNumber={index}
+                key={index}
+                navigationProp={navigate}
+                houses={this.props.houses}
+                thisProp={this}>
+              </CardView>
+            ))}
         </ScrollView>
       </View>
     );
@@ -71,17 +82,66 @@ const CardView = (props) =>
           source={{uri: props.curHouse.getPhoto() == '' ? 'http://via.placeholder.com/200x200': props.curHouse.getPhoto()}}>
           <Text style={styles.cardText}>{'Address: ' + props.curHouse.getAddress()}</Text>
           <Text style={styles.cardText}>{`Price: $${props.curHouse.getPrice()}`}</Text>
-          <CardAction >
+          <CardAction>
             <Button
-              style={styles.cardButton}
               onPress={() =>
                 props.navigationProp('HouseDetailScreen', {house: props.curHouse})}>
-              <Text style={styles.buttonText}>{'View Details'}</Text>
+              <Text style={styles.detailsButtonText}>{'View Details'}</Text>
+            </Button>
+            <Button
+              onPress={() => removeFromFavourites(props.curHouse, props.navigationProp, props.houses, props.thisProp)}>
+              <Text style={styles.removeButtonText}>{'Remove'}</Text>
             </Button>
           </CardAction>
         </Image>
       </CardImage>
   </Card>;
+
+async function removeFromFavourites(curHouse, navigationProp, houses, thisProp) {
+
+  const removeFromFavouritesResp = await fetch(new Request(
+    'https://hospitable-vise.glitch.me/deleteFavourite',
+    {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({"token": global.userToken, "mlsid": curHouse.getMlsid()}),
+    }));
+
+  const removeFromFavouritesRespJson = await removeFromFavouritesResp._bodyInit;
+  if(!removeFromFavouritesRespJson.includes("done")) {
+    ToastAndroid.show('Failed to remove :(', ToastAndroid.SHORT);
+    return;
+  }
+  await ToastAndroid.show('Removed from Favourites!', ToastAndroid.SHORT);
+  await console.log(removeFromFavouritesRespJson);
+  await deleteCurHouse(curHouse, houses)
+  await thisProp.forceUpdate();
+  //await populateList(houses, navigationProp)
+}
+
+function deleteCurHouse(curHouse, houses) {
+  for(var cur_index in houses) {
+    if(houses[cur_index] == curHouse) {
+      delete houses[cur_index];
+      break;
+    }
+  }
+}
+
+function populateList(houses, navigate) {
+  houses.map((house, index) => (
+    <CardView
+      curHouse={house}
+      curHouseNumber={index}
+      key={index}
+      navigationProp={navigate}
+      houses={houses}>
+    </CardView>
+  ));
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -134,11 +194,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  cardButton: {
-    marginTop: 80,
-    marginLeft: 130,
-  },
-  buttonText: {
+  detailsButtonText: {
     textShadowColor: 'black',
     textShadowOffset: {width: 1, height: 1},
     textShadowRadius: 1,
@@ -146,6 +202,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 80,
-    marginLeft: SCREEN_WIDTH/2 - 60,
+    marginLeft: SCREEN_WIDTH/2 - 100,
+  },
+  removeButtonText: {
+    textShadowColor: 'black',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 1,
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginLeft: 20,
+    marginTop: 80,
   },
 });
