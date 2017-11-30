@@ -173,6 +173,23 @@ app.post('/login', function(req, res) {
     })
 });
 
+app.post('/logout', function(req, res) {
+    console.log("Logout request received from " + req.body.token);
+    authenticate(req.body.token).then(session => {
+        if (session) {
+            Session.findOne({where: {token: req.body.token}}).then(session => {
+                session.updateAttributes({
+                    valid: false
+                });
+                res.send("logged out");
+            });
+        }
+        else {
+            res.status(401).send("Not logged in");
+        }
+    })
+});
+
 app.post('/register', function(req, res) {
     console.log("Register request received from " + req.body.username);
     registerUser(req.body.username, req.body.password).then(authenticated => {
