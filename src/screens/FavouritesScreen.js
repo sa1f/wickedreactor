@@ -31,6 +31,7 @@ type Props = {
 
 type State = {
   random: boolean,
+  houses: List<House>,
 }
 
 export default class FavouritesScreen extends React.Component<Props, State> {
@@ -38,8 +39,15 @@ export default class FavouritesScreen extends React.Component<Props, State> {
     super(props);
     this.state = {
       random: false,
+      houses: props.houses,
     };
   }
+
+  _removeHouse = (index: number) => {
+    this.setState({
+      houses: this.state.houses.delete(index),
+    });
+  };
 
   render () {
     const { navigate } = this.props.navigation;
@@ -51,21 +59,21 @@ export default class FavouritesScreen extends React.Component<Props, State> {
             name='arrow-left'
             type='font-awesome'
             color='white'
-            onPress={() => navigate('Map', { houses: this.props.houses })}
+            onPress={() => navigate('Map', { houses: this.state.houses })}
           />
           <Text style={styles.headertext}>
             Favourites
           </Text>
         </View>
         <ScrollView>
-          {this.props.houses.map((house, index) => (
+          {this.state.houses.map((house, index) => (
               <CardView
-                curHouse={house}
-                curHouseNumber={index}
                 key={index}
-                navigationProp={navigate}
-                houses={this.props.houses}
-                thisProp={this}>
+                house={house}
+                houseNumber={index}
+                houses={this.state.houses}
+                navigation={navigate}
+                onRemoveHouse={() => this._removeHouse(index)}>
               </CardView>
             ))}
         </ScrollView>
@@ -74,31 +82,46 @@ export default class FavouritesScreen extends React.Component<Props, State> {
   }
 }
 
-const CardView = (props) =>
-  <Card style={styles.card}>
+const CardView = (props: {
+    house: House,
+    houseNumber: number,
+    houses: List<House>,
+    navigation: Function,
+    onRemoveHouse: Function,
+}) => {
+  return (
+    <Card style={styles.card}>
       <CardImage>
         <Image
           style={styles.image}
-          source={{uri: props.curHouse.getPhoto() == '' ? 'http://via.placeholder.com/200x200': props.curHouse.getPhoto()}}>
-          <Text style={styles.cardText}>{'Address: ' + props.curHouse.getAddress()}</Text>
-          <Text style={styles.cardText}>{`Price: $${props.curHouse.getPrice()}`}</Text>
+          source={{uri: props.house.getPhoto() || 'http://via.placeholder.com/200x200'}}>
+          <Text style={styles.cardText}>{'Address: ' + props.house.getAddress()}</Text>
+          <Text style={styles.cardText}>{`Price: $${props.house.getPrice()}`}</Text>
           <CardAction>
             <Button
               onPress={() =>
-                props.navigationProp('HouseDetailScreen', {house: props.curHouse})}>
+                props.navigation('HouseDetailScreen', {house: props.house})}>
               <Text style={styles.detailsButtonText}>{'View Details'}</Text>
             </Button>
             <Button
-              onPress={() => removeFromFavourites(props.curHouse, props.navigationProp, props.houses, props.thisProp)}>
+              onPress={() => _removeFromFavourites(
+                props.house,
+                props.houses,
+                props.onRemoveHouse,
+              )}>
               <Text style={styles.removeButtonText}>{'Remove'}</Text>
             </Button>
           </CardAction>
         </Image>
       </CardImage>
-  </Card>;
+  </Card>);
+};
 
-async function removeFromFavourites(curHouse, navigationProp, houses, thisProp) {
-
+const _removeFromFavourites = async (
+  house: House,
+  houses: List<House>,
+  onRemoveHouse: Function,
+) => {
   const removeFromFavouritesResp = await fetch(new Request(
     'https://hospitable-vise.glitch.me/deleteFavourite',
     {
@@ -107,41 +130,23 @@ async function removeFromFavourites(curHouse, navigationProp, houses, thisProp) 
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({"token": global.userToken, "mlsid": curHouse.getMlsid()}),
+      body: JSON.stringify({
+        "token": global.userToken,
+        "mlsid": house.getMlsid(),
+      }),
     }));
 
   const removeFromFavouritesRespJson = await removeFromFavouritesResp._bodyInit;
-  if(!removeFromFavouritesRespJson.includes("done")) {
+
+  if (!removeFromFavouritesRespJson.includes("done")) {
     ToastAndroid.show('Failed to remove :(', ToastAndroid.SHORT);
     return;
   }
-  await ToastAndroid.show('Removed from Favourites!', ToastAndroid.SHORT);
-  await console.log(removeFromFavouritesRespJson);
-  await deleteCurHouse(curHouse, houses)
-  await thisProp.forceUpdate();
-  //await populateList(houses, navigationProp)
-}
 
-function deleteCurHouse(curHouse, houses) {
-  for(var cur_index in houses) {
-    if(houses[cur_index] == curHouse) {
-      delete houses[cur_index];
-      break;
-    }
-  }
-}
-
-function populateList(houses, navigate) {
-  houses.map((house, index) => (
-    <CardView
-      curHouse={house}
-      curHouseNumber={index}
-      key={index}
-      navigationProp={navigate}
-      houses={houses}>
-    </CardView>
-  ));
-}
+  ToastAndroid.show('Removed from Favourites!', ToastAndroid.SHORT);
+  console.log(removeFromFavouritesRespJson);
+  onRemoveHouse();
+};
 
 const styles = StyleSheet.create({
   container: {
