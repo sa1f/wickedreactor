@@ -13,6 +13,7 @@ import House from '../models/House';
 import Filter from '../models/Filter';
 import Collapsible from 'react-native-collapsible';
 import Accordion from 'react-native-collapsible/Accordion';
+import { ToastAndroid } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width;
@@ -65,6 +66,12 @@ export default class HouseDetailScreen extends React.Component<Props, {}> {
             type='font-awesome'
             color='white'
             onPress={() => this._goToMapScreen()}
+          />
+          <Icon style={styles.favicon}
+            name='star'
+            type='font-awesome'
+            color='white'
+            onPress={() => addToFavourites(this.props.house, this.props.navigation.navigate)}
           />
           <Text style={styles.headertext}>
             House Details
@@ -143,6 +150,31 @@ function printList(nameList, distList, alternate) {
     return retString;
 }
 
+async function addToFavourites(curHouse, navigate) {
+
+  console.log(curHouse);
+  if(global.userToken == null) {
+    ToastAndroid.show('Please login first', ToastAndroid.SHORT);
+    navigate('LoginScreen', {})
+    return;
+  }
+
+  const addToFavouritesResp = await fetch(new Request(
+    'https://childlike-quartz.glitch.me/storeFavourite',
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({"token": global.userToken, "mlsid": "100", "houseJson": JSON.stringify(curHouse)}),
+    }));
+
+    const addToFavouritesRespJson = await addToFavouritesResp._bodyInit;
+    await ToastAndroid.show('Saved to Favourites!', ToastAndroid.SHORT);
+    await console.log(addToFavouritesRespJson);
+}
+
 // this.props.house.getSchools()
 
 const styles = StyleSheet.create({
@@ -204,5 +236,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 5,
     left: 5,
+  },
+  favicon: {
+    position: 'absolute',
+    top: 15,
+    right: 25,
   }
 });

@@ -25,9 +25,11 @@
     "react-native-prompt": "^1.0.0",
     "react-native-settings-list": "^1.7.1",
     "react-native-sglistview": "^0.4.3",
+    "react-native-simple-login": "^1.1.0",
     "react-native-vector-icons": "^4.4.2",
     "react-navigation": "^1.0.0-beta.13",
     "react-navigation-props-mapper": "^0.1.2",
+    "realm": "^2.0.11",
     "realtorca": "^1.0.0",
     "supertest": "^3.0.0"
   },

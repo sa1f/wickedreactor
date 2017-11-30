@@ -14,6 +14,7 @@ import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import { Text } from 'react-native';
 import { Image } from 'react-native';
+import { ToastAndroid } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width;
@@ -46,11 +47,13 @@ export default class MapScreen extends React.Component<Props, State> {
     this.state = {
       houses: this.props.houses,
     };
+
   }
 
   async _updateHouses(region: Region) {
     const houses = await Filter.getFilter().setRegion(region).genHouses();
     this.setState({houses});
+    console.log("user token: " + global.userToken);
   }
 
   render() {
@@ -82,13 +85,20 @@ export default class MapScreen extends React.Component<Props, State> {
             onPress={() => navigate('Filter', {})}
           />
         </View>
-
         <View style={styles.houseIcon}>
           <Icon
             name='home'
             type='font-awesome'
             reverse={true}
             onPress={() => navigate('HouseListScreen', {houses: this.state.houses})}
+          />
+        </View>
+        <View style={styles.houseIcon}>
+          <Icon
+            name='star'
+            type='font-awesome'
+            reverse={true}
+            onPress={() => navigateToFavourites(navigate)}
           />
         </View>
       </View>
@@ -126,6 +136,33 @@ const HouseCallout = (props) =>
       <Text style={styles.calloutPrice}>{`Price: \n$${props.curHouse.getPrice()}`}</Text>
     </Image>
   </MapView.Callout>;
+
+async function navigateToFavourites(navigate) {
+  if(global.userToken == null) {
+    ToastAndroid.show('Please login first', ToastAndroid.SHORT);
+    navigate('LoginScreen', {})
+  } else {
+    const getFavResponse = await fetch(new Request(
+      'https://childlike-quartz.glitch.me/getFavourites',
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({"token": global.userToken}),
+      }));
+
+      const getFavResponseJson = await JSON.parse(getFavResponse._bodyInit);
+
+      var houseArray = [];
+      for(var cur_index in getFavResponseJson) {
+          houseArray[cur_index] = getFavResponseJson[cur_index].houseJson;
+      }
+      console.log(houseArray);
+      await navigate('FavouritesScreen', {houses: House.createHouses(houseArray)});
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -165,15 +202,5 @@ const styles = StyleSheet.create({
   image: {
     width: 250,
     height: 150,
-  },
-  filterIcon: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-  houseIcon: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
   }
 });

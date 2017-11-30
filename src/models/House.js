@@ -1,5 +1,3 @@
-// @flow
-'use strict';
 
 import { List } from 'immutable';
 
@@ -135,24 +133,50 @@ export default class House {
     return this._chargingStationDistances;
   }
 
+  toJSON(): Object {
+    return {
+      latitude: this._latitude,
+      longitude: this._longitude,
+      address: this._address,
+      price: this._price,
+
+      schools: this._schools,
+      libraries: this._libraries,
+      culturalSpaces: this._culturalSpaces,
+      parks: this._parks,
+      recreationalCenters: this._recreationalCenters,
+      chargingStations: this._chargingStations,
+      busStops: this._busStops,
+      photo: this._photo,
+
+      schoolDistances: this._schoolDistances,
+      libraryDistances: this._libraryDistances,
+      culturalSpaceDistances: this._culturalSpaceDistances,
+      parkDistances: this._parkDistances,
+      recreationalCenterDistances: this._recreationalCenterDistances,
+      chargingStationDistances: this._chargingStationDistances
+    };
+  }
+
   static _assertIsHouseData(object: Object): Object {
     const keys = Object.keys(object);
 
     if (!keys.includes("latitude") ||
       !keys.includes("longitude") ||
       !keys.includes("price")) {
-      console.log(object);
+      console.log(keys);
       throw new TypeError();
     }
 
     object.latitude = parseFloat(object.latitude);
     object.longitude = parseFloat(object.longitude);
-    object.price = this._formatPriceAsNumber(object.price);
+    if(typeof object.price == "string")
+      object.price = this._formatPriceAsNumber(object.price);
 
     return object;
   }
 
   static _formatPriceAsNumber(price: string): number {
-    return parseInt(price.replace(/\D/g, ''), 10);
+      return parseInt(price.replace(/\D/g, ''), 10);
   }
 }
