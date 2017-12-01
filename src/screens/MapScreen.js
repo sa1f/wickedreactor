@@ -1,6 +1,7 @@
 // @flow
 'use strict';
 
+import { ActivityIndicator } from 'react-native';
 import { Component } from 'react';
 import { Dimensions } from 'react-native';
 import Filter from '../models/Filter';
@@ -26,6 +27,7 @@ type Props = {
 
 type State = {
   houses: List<House>,
+  isLoadingHouses: bool,
 };
 
 export default class MapScreen extends React.Component<Props, State> {
@@ -46,13 +48,20 @@ export default class MapScreen extends React.Component<Props, State> {
     super(props);
     this.state = {
       houses: this.props.houses,
+      isLoadingHouses: false,
     };
 
   }
 
   async _updateHouses(region: Region) {
+    this.setState({isLoadingHouses: true});
     const houses = await Filter.getFilter().setRegion(region).genHouses();
-    this.setState({houses});
+
+    this.setState({
+      houses: houses,
+      isLoadingHouses: false,
+    });
+
     console.log("user token: " + global.userToken);
   }
 
@@ -109,6 +118,11 @@ export default class MapScreen extends React.Component<Props, State> {
             onPress={() => logOut()}
           />
         </View>
+        {this.state.isLoadingHouses &&
+          <ActivityIndicator
+            animating={true}
+            size={'large'}
+            style={styles.spinner} />}
       </View>
     );
   }
@@ -219,5 +233,9 @@ const styles = StyleSheet.create({
   image: {
     width: 250,
     height: 150,
-  }
+  },
+  spinner: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
